@@ -44,7 +44,7 @@ export default function AboutSection() {
                                 About Me
                             </h2>
 
-                            <h3 className="text-[32px] sm:text-[40px] md:text-[56px] lg:text-[72px] font-black italic text-white leading-none tracking-wider">
+                            <h3 className="text-[32px] sm:text-[40px] md:text-[56px] lg:text-[72px] font-black italic text-white leading-none capitalize tracking-wider">
                                 beyond <br />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-purple-500 to-blue-400">
                                     the code.
