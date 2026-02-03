@@ -129,7 +129,7 @@ export default function SkillsSection() {
 
                     <div className="lg:col-span-5 flex justify-center">
                         <ProfileCard3D
-                            imageUrl="/me.JPG"
+                            imageUrl="/image/me.JPG"
                             name="Sabilah M."
                             tagline="Frontend Developer specializing in 3D Web Experiences"
                             skills={mainSkills}
