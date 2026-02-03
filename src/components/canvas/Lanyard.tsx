@@ -1,6 +1,6 @@
 'use client';
 import * as THREE from 'three';
-import { useRef, useState } from 'react';
+import { Suspense, useRef, useState } from 'react';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
 import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
 import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
@@ -8,17 +8,28 @@ import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
-const cardGLB = "/3dAsset/idcard_abil.glb";
-const lanyardTexture = "/3dAsset/lanyard.png";
+// const cardGLB = useGLTF.preload("/3dAsset/idcard_abil.glb");
+// const lanyardTexture = useTexture.preload("/3dAsset/lanyard.png");;
+useGLTF.preload("/3dAsset/idcard_abil.glb");
+useTexture.preload("/3dAsset/lanyard.png");
 
 export default function Lanyard() {
   return (
     <div className="w-full h-[50rem] md:h-[45rem] cursor-grab active:cursor-grabbing">
-      <Canvas camera={{ position: [0, 0, 10], fov: 25 }} gl={{ alpha: true }}>
+      <Canvas 
+        camera={{ position: [0, 0, 10], fov: 25 }} 
+        gl={{ alpha: true, antialias: true }}
+        dpr={[1, 1.5]} // Membatasi pixel ratio untuk hemat memori
+      >
         <ambientLight intensity={Math.PI} />
-        <Physics gravity={[0, -40, 0]} timeStep={1 / 60}>
-          <Band />
-        </Physics>
+        
+        {/* PERBAIKAN: Bungkus dengan Suspense agar Wasm tidak dipaksa load sebelum siap */}
+        <Suspense fallback={null}>
+          <Physics gravity={[0, -40, 0]} timeStep={1 / 60}>
+            <Band />
+          </Physics>
+        </Suspense>
+
         <Environment blur={0.75}>
           <Lightformer intensity={3} color="white" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
           <Lightformer intensity={10} color="#ffffff" position={[-10, 0, 14]} rotation={[1.5, Math.PI / 2, Math.PI / 3]} scale={[100, 10, 1]} />
@@ -45,8 +56,9 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
     linearDamping: 4
   };
 
-  const { nodes, materials } = useGLTF(cardGLB) as any;
-  const texture = useTexture(lanyardTexture);
+  const { nodes, materials } = useGLTF("/3dAsset/idcard_abil.glb") as any;
+  const texture = useTexture("/3dAsset/lanyard.png");
+
   if (materials.base && materials.base.map) {
   materials.base.map.anisotropy = 16;
   materials.base.map.minFilter = THREE.LinearFilter;

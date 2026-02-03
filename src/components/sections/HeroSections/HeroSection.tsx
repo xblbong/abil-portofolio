@@ -102,7 +102,7 @@ export default function HeroSection() {
                                 name="Sabilah Mudrikah"
                                 title="Frontend Developer"
                                 handle="sblhh.m"
-                                avatarUrl="/image/myself/me.jpg"
+                                avatarUrl="/me.JPG"
                                 status="Freelancer"
                             />
                         </div>

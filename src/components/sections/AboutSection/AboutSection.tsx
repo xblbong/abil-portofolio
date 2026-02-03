@@ -1,6 +1,11 @@
 "use client";
 import { motion } from "framer-motion";
-import Lanyard from "../../canvas/Lanyard";
+import dynamic from "next/dynamic";
+
+const Lanyard = dynamic(() => import("../../canvas/Lanyard"), {
+    ssr: false,
+    loading: () => <div className="h-[40rem] w-full" /> // Placeholder saat loading
+});
 
 export default function AboutSection() {
     return (
@@ -16,10 +21,11 @@ export default function AboutSection() {
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 1 }}
                         className="relative order-2 lg:order-1 flex flex-col items-center"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-puple-500/20 blur-3xl rounded-full" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-purple-500/20 blur-3xl rounded-full" />
                         <Lanyard />
                         <p className="text-center text-[11px] sm:text-[12px] md:text-[13px] text-gray-500 italic animate-pulse">
                             *Try dragging my ID card!
