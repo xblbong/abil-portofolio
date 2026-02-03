@@ -134,7 +134,7 @@ export default function SkillsSection() {
                             tagline="Frontend Developer specializing in 3D Web Experiences"
                             skills={mainSkills}
                         />
-                    </div>
+                    </div> 
                 </div>
             </div>
         </section>
