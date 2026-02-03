@@ -1,11 +1,13 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+// Ambil value dan hapus spasi/karakter tak terlihat jika ada
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || ''
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim() || ''
 
-// Buat client hanya jika variabel tersedia
-// Jika tidak, buat dummy client atau berikan string kosong agar tidak crash saat build
+// Validasi agar tidak crash saat build
+const isUrlValid = supabaseUrl.startsWith('http://') || supabaseUrl.startsWith('https://')
+
 export const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co', 
+  isUrlValid ? supabaseUrl : 'https://placeholder.supabase.co', 
   supabaseAnonKey || 'placeholder-key'
 )
