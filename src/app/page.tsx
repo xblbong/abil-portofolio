@@ -7,6 +7,7 @@ import { Project } from "../types";
 import MyProjectsSection from "../components/sections/MyProject/MyProjectsSection";
 import SkillsSection from "../components/sections/SkillSection/SkillSection";
 import AboutSection from "../components/sections/AboutSection/AboutSection";
+import ContactSection from "../components/sections/ContactSection/ContactSection";
 
 const dummyProjects: Project[] = [
   {
@@ -117,6 +118,7 @@ export default async function HomePage() {
       <AboutSection />
       <MyProjectsSection projects={dummyProjects} />
       <SkillsSection />
+      <ContactSection />
     </>
   );
 }

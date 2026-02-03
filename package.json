@@ -9,9 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@dimforge/rapier3d-compat": "^0.19.3",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@react-three/rapier": "^2.2.0",
+    "@splinetool/react-spline": "^4.1.0",
     "@supabase/supabase-js": "^2.90.1",
     "@types/three": "^0.182.0",
     "clsx": "^2.1.1",

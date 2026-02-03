@@ -80,7 +80,8 @@ export default function Navbar() {
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={()=> alert("Maaf ya sayang ku fitur ini masih di proses Abil \nNext time coba lagi yaww! ><")}
+            // onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             className="p-2.5 rounded-full bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 transition-colors"
           >
             {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}

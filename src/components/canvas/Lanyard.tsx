@@ -8,20 +8,20 @@ import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
-const cardGLB = "/3dAsset/card.glb";
+const cardGLB = "/3dAsset/idcard_abil.glb";
 const lanyardTexture = "/3dAsset/lanyard.png";
 
 export default function Lanyard() {
   return (
-    <div className="w-full h-[500px] md:h-[600px] cursor-grab active:cursor-grabbing">
-      <Canvas camera={{ position: [0, 0, 15], fov: 25 }} gl={{ alpha: true }}>
+    <div className="w-full h-[50rem] md:h-[45rem] cursor-grab active:cursor-grabbing">
+      <Canvas camera={{ position: [0, 0, 10], fov: 25 }} gl={{ alpha: true }}>
         <ambientLight intensity={Math.PI} />
         <Physics gravity={[0, -40, 0]} timeStep={1 / 60}>
           <Band />
         </Physics>
         <Environment blur={0.75}>
-          <Lightformer intensity={2} color="white" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
-          <Lightformer intensity={10} color="#8b5cf6" position={[-10, 0, 14]} rotation={[0, Math.PI / 2, Math.PI / 3]} scale={[100, 10, 1]} />
+          <Lightformer intensity={3} color="white" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+          <Lightformer intensity={10} color="#ffffff" position={[-10, 0, 14]} rotation={[1.5, Math.PI / 2, Math.PI / 3]} scale={[100, 10, 1]} />
         </Environment>
       </Canvas>
     </div>
@@ -47,6 +47,13 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
 
   const { nodes, materials } = useGLTF(cardGLB) as any;
   const texture = useTexture(lanyardTexture);
+  if (materials.base && materials.base.map) {
+  materials.base.map.anisotropy = 16;
+  materials.base.map.minFilter = THREE.LinearFilter;
+  materials.base.map.magFilter = THREE.LinearFilter;
+  materials.base.map.needsUpdate = true;
+}
+  
   const [curve] = useState(() => new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]));
   const [dragged, drag] = useState<any>(false);
 
@@ -89,8 +96,8 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
     <>
       <group position={[0, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
-        <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
-        <RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
+        <RigidBody position={[1, 0, 0]} ref={j1} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
+        <RigidBody position={[1.5, 0, 0]} ref={j2} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
         <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
         <RigidBody
           position={[2, 0, 0]}
@@ -100,7 +107,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
         >
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
-            scale={2.25}
+            scale={2.5}
             position={[0, -1.2, -0.05]}
             onPointerUp={(e: any) => (e.target.releasePointerCapture(e.pointerId), drag(false))}
             onPointerDown={(e: any) => (e.target.setPointerCapture(e.pointerId), drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation()))))}
@@ -117,7 +124,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
         {/* @ts-ignore */}
         <meshLineGeometry />
         {/* @ts-ignore */}
-        <meshLineMaterial color="white" map={texture} useMap repeat={[-4, 1]} lineWidth={1} />
+        <meshLineMaterial color="#fbff" map={texture} useMap repeat={[-4, 1]} lineWidth={1} />
       </mesh>
     </>
   );

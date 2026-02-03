@@ -72,15 +72,15 @@ export default function HeroSection() {
                         {/* Social Links - Law of Proximity */}
                         <div className="mt-12 flex items-center gap-8">
                             {[
-                                { icon: Github, link: "#" },
-                                { icon: Linkedin, link: "#" },
-                                { icon: Instagram, link: "#" }
+                                { icon: Github, link: "https://github.com/xblbong" },
+                                { icon: Linkedin, link: "https://www.linkedin.com/in/sabilah-mudrikah-41b21b301/" },
+                                { icon: Instagram, link: "https://www.instagram.com/sblhh.m/" }
                             ].map((social, i) => (
                                 <motion.a
                                     key={i}
                                     href={social.link}
                                     whileHover={{ y: -4 }}
-                                    className="text-gray-500 hover:text-[#b06fec] transition-colors p-2"
+                                    className="text-gray-200 hover:text-[#b06fec] transition-colors p-2"
                                 >
                                     <social.icon size={24} />
                                 </motion.a>
