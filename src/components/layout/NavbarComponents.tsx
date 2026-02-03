@@ -17,35 +17,39 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { name: "About", href: "#about", icon: <User size={18} /> },
-  { name: "Skills", href: "#skills", icon: <Code2 size={18} /> },
+  { name: "About", href: "#about", icon: <User size={18} />, isPending: false },
+  { name: "Skills", href: "#skills", icon: <Code2 size={18} />, isPending: false },
   {
     name: "MyProjects",
     href: "#projects",
     icon: <FolderArchiveIcon size={18} />,
+    isPending: false,
   },
-  { name: "Experience", href: "#experience", icon: <Briefcase size={18} /> },
-  { name: "Certificates", href: "#certificates", icon: <Award size={18} /> },
-  // { name: "Hobbies", href: "#hobbies", icon: <Heart size={18} /> },
-  { name: "Contact", href: "#contact", icon: <Mail size={18} /> },
+  // isPending: true untuk yang belum ada kontennya
+  { name: "Experience", href: "#experience", icon: <Briefcase size={18} />, isPending: true },
+  { name: "Certificates", href: "#certificates", icon: <Award size={18} />, isPending: true },
+  { name: "Contact", href: "#contact", icon: <Mail size={18} />, isPending: false },
 ];
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const mounted = useMounted();
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleNavClick = (e: React.MouseEvent, link: any) => {
+    if (link.isPending) {
+      e.preventDefault(); // Mencegah scroll ke id yang kosong
+      alert("Maaf ya maniezz fitur ini masih di proses Abil \nKalau kamu mau order jasa freelance bisa klik bagian menu kontak yaa! ><");
+    } else {
+      setIsOpen(false); // Tutup menu mobile jika link valid diklik
+    }
+  };
 
   if (!mounted) return null;
-  function useMounted() {
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-      setMounted(true);
-    }, []);
-
-    return mounted;
-  }
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center p-4">
@@ -66,8 +70,9 @@ export default function Navbar() {
             <a
               key={link.name}
               href={link.href}
+              onClick={(e) => handleNavClick(e, link)}
               className="px-4 py-2 rounded-full text-lg font-medium 
-             text-outline-soft
+             text-white
              hover:bg-white/10 dark:hover:bg-white/5 
              transition-all relative group"
             >
@@ -80,8 +85,7 @@ export default function Navbar() {
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
           <button
-            onClick={()=> alert("Maaf ya sayang ku fitur ini masih di proses Abil \nNext time coba lagi yaww! ><")}
-            // onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             className="p-2.5 rounded-full bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 transition-colors"
           >
             {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
@@ -113,7 +117,7 @@ export default function Navbar() {
                 transition={{ delay: index * 0.05 }}
                 key={link.name}
                 href={link.href}
-                onClick={() => setIsOpen(false)}
+                onClick={(e) => handleNavClick(e, link)}
                 className="flex items-center gap-4 p-3 rounded-2xl hover:bg-purple-500/10 transition-colors group"
               >
                 <div className="p-2 rounded-lg bg-purple-500/10 text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-all">
