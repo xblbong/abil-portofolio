@@ -1,6 +1,6 @@
 'use client';
 import * as THREE from 'three';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
 import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
 import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
@@ -8,7 +8,7 @@ import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
-const cardGLB = "/3dAsset/card.glb"; 
+const cardGLB = "/3dAsset/card.glb";
 const lanyardTexture = "/3dAsset/lanyard.png";
 
 export default function Lanyard() {
@@ -29,15 +29,27 @@ export default function Lanyard() {
 }
 
 function Band({ maxSpeed = 50, minSpeed = 0 }) {
-  const band = useRef<any>(), fixed = useRef<any>(), j1 = useRef<any>(), j2 = useRef<any>(), j3 = useRef<any>(), card = useRef<any>();
-  const vec = new THREE.Vector3(), ang = new THREE.Vector3(), rot = new THREE.Vector3(), dir = new THREE.Vector3();
-  const segmentProps = { type: 'dynamic' as const, canSleep: true, colliders: false, angularDamping: 4, linearDamping: 4 };
+  const band = useRef<any>(null),
+    fixed = useRef<any>(null),
+    j1 = useRef<any>(null),
+    j2 = useRef<any>(null),
+    j3 = useRef<any>(null),
+    card = useRef<any>(null);
   
+  const vec = new THREE.Vector3(), ang = new THREE.Vector3(), rot = new THREE.Vector3(), dir = new THREE.Vector3();
+  const segmentProps = {
+    type: 'dynamic' as const,
+    canSleep: true,
+    colliders: false as const,
+    angularDamping: 4,
+    linearDamping: 4
+  };
+
   const { nodes, materials } = useGLTF(cardGLB) as any;
   const texture = useTexture(lanyardTexture);
   const [curve] = useState(() => new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]));
   const [dragged, drag] = useState<any>(false);
-  
+
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
@@ -51,17 +63,22 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
       [card, j1, j2, j3, fixed].forEach((ref) => ref.current?.wakeUp());
       card.current?.setNextKinematicTranslation({ x: vec.x - dragged.x, y: vec.y - dragged.y, z: vec.z - dragged.z });
     }
-    if (fixed.current) {
+    
+    if (fixed.current && j1.current && j2.current && j3.current && band.current) {
       [j1, j2].forEach((ref) => {
-        if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
-        const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())));
-        ref.current.lerped.lerp(ref.current.translation(), delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)));
+        const obj = ref.current as any;
+        if (!obj.lerped) obj.lerped = new THREE.Vector3().copy(obj.translation());
+        const clampedDistance = Math.max(0.1, Math.min(1, obj.lerped.distanceTo(obj.translation())));
+        obj.lerped.lerp(obj.translation(), delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)));
       });
+
       curve.points[0].copy(j3.current.translation());
-      curve.points[1].copy(j2.current.lerped);
-      curve.points[2].copy(j1.current.lerped);
+      curve.points[1].copy((j2.current as any).lerped);
+      curve.points[2].copy((j1.current as any).lerped);
       curve.points[3].copy(fixed.current.translation());
+      
       band.current.geometry.setPoints(curve.getPoints(32));
+      
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
       card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
@@ -75,10 +92,10 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
         <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
         <RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
         <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
-        <RigidBody 
-          position={[2, 0, 0]} 
-          ref={card} 
-          {...segmentProps} 
+        <RigidBody
+          position={[2, 0, 0]}
+          ref={card}
+          {...segmentProps}
           type={dragged ? 'kinematicPosition' : 'dynamic'}
         >
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
@@ -97,7 +114,9 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
         </RigidBody>
       </group>
       <mesh ref={band}>
+        {/* @ts-ignore */}
         <meshLineGeometry />
+        {/* @ts-ignore */}
         <meshLineMaterial color="white" map={texture} useMap repeat={[-4, 1]} lineWidth={1} />
       </mesh>
     </>
