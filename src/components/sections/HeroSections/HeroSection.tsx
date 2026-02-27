@@ -59,13 +59,14 @@ export default function HeroSection() {
                             </motion.a>
 
                             <motion.a
-                                href="#contact"
+                                href="/file/cv-amba.pdf"
+                                download="cv-sabilah-mudrikah.pdf"
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 className="px-8 py-4 border border-white/10 bg-white/5 hover:bg-white/10 rounded-2xl font-bold backdrop-blur-md flex items-center justify-center gap-2 transition-all"
                             >
                                 <Send size={18} />
-                                Get in Touch
+                                Download CV
                             </motion.a>
                         </div>
 
