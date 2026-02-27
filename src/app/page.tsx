@@ -8,6 +8,7 @@ import MyProjectsSection from "../components/sections/MyProject/MyProjectsSectio
 import SkillsSection from "../components/sections/SkillSection/SkillSection";
 import AboutSection from "../components/sections/AboutSection/AboutSection";
 import ContactSection from "../components/sections/ContactSection/ContactSection";
+import ExperienceSection from "../components/sections/ExperienceSection/ExperienceSection";
 
 const dummyProjects: Project[] = [
   {
@@ -117,6 +118,7 @@ export default async function HomePage() {
       <HeroSection />
       <AboutSection />
       <MyProjectsSection projects={dummyProjects} />
+      <ExperienceSection />
       <SkillsSection />
       <ContactSection />
     </>
