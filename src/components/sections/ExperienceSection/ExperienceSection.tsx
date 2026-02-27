@@ -118,7 +118,7 @@ export default function ExperienceSection() {
                                                 <div className="space-y-1">
                                                     {/* Impact Tag - Sekarang posisinya aman */}
                                                     <div className="inline-flex px-3 py-1 mb-5 bg-purple-600/10 border border-purple-600/20 rounded-full h-fit">
-                                                        <span className="text-[10px] font-bold text-purple-500 capitalize tracking-widest whitespace-nowrap">
+                                                        <span className="text-[10px] font-bold text-purple-600 capitalize tracking-widest whitespace-nowrap">
                                                             {item.impact}
                                                         </span>
                                                     </div>
