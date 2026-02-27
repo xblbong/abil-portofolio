@@ -26,7 +26,7 @@ const navLinks = [
     isPending: false,
   },
   // isPending: true untuk yang belum ada kontennya
-  { name: "Experience", href: "#experience", icon: <Briefcase size={18} />, isPending: true },
+  { name: "Experience", href: "#experience", icon: <Briefcase size={18} />, isPending: false },
   { name: "Certificates", href: "#certificates", icon: <Award size={18} />, isPending: true },
   { name: "Contact", href: "#contact", icon: <Mail size={18} />, isPending: false },
 ];
