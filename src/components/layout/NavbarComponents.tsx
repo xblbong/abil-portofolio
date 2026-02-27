@@ -43,7 +43,7 @@ export default function Navbar() {
   const handleNavClick = (e: React.MouseEvent, link: any) => {
     if (link.isPending) {
       e.preventDefault(); // Mencegah scroll ke id yang kosong
-      alert("Maaf ya maniezz fitur ini masih di proses Abil \nKalau kamu mau order jasa freelance bisa klik bagian menu kontak yaa! ><");
+      alert("Maaf ya fitur ini masih di proses Abil \nKalau kamu mau order jasa freelance bisa klik bagian menu kontak yaa! ><");
     } else {
       setIsOpen(false); // Tutup menu mobile jika link valid diklik
     }
