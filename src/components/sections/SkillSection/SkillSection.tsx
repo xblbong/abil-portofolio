@@ -98,7 +98,7 @@ export default function SkillsSection() {
                                                 hover:border-purple-400/40 transition-all duration-300 ease-in-out"
                                 >
                                     {/* Title */}
-                                    <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-purple-400 mb-4">
+                                    <h4 className="text-sm font-bold capitalize tracking-[0.2em] text-purple-400 mb-4">
                                         {group.cat}
                                     </h4>
 

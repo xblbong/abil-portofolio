@@ -40,7 +40,7 @@ export default function AboutSection() {
                         className="order-1 lg:order-2 space-y-8 text-center lg:text-left"
                     >
                         <div className="space-y-4">
-                            <h2 className="text-[11px] sm:text-xs md:text-sm tracking-[0.35em] text-purple-400 uppercase">
+                            <h2 className="text-[11px] sm:text-xs md:text-sm tracking-[0.35em] text-purple-400 capitalize">
                                 About Me
                             </h2>
 

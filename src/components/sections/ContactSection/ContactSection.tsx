@@ -85,7 +85,7 @@ export default function ContactSection() {
             </div>
 
             <div className="mt-12">
-              <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">
+              <span className="text-[10px] font-bold text-gray-500 capitalize tracking-[0.3em]">
                 Email Me
               </span>
               <a
@@ -117,7 +117,7 @@ export default function ContactSection() {
                 <ArrowUpRight size={20} className="group-hover:rotate-45 transition-transform" />
               </div>
               <div className="mt-8">
-                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{social.name}</span>
+                <span className="text-[10px] font-bold text-gray-500 capitalize tracking-widest">{social.name}</span>
                 <p className="text-white font-bold text-xl mt-1">Let&apos;s Follow</p>
               </div>
             </motion.a>
@@ -127,7 +127,7 @@ export default function ContactSection() {
           {/* <div className="p-8 bg-white/[0.03] border border-white/10 rounded-[2.5rem] flex flex-col items-center justify-center text-center">
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]" />
-              <span className="text-[10px] font-bold text-green-500 uppercase tracking-widest tracking-tighter">Available for Freelance</span>
+              <span className="text-[10px] font-bold text-green-500 capitalize tracking-widest tracking-tighter">Available for Freelance</span>
             </div>
             <p className="text-gray-500 text-xs italic">Based in Indonesia, <br/> Working Worldwide.</p>
           </div> */}
@@ -136,8 +136,8 @@ export default function ContactSection() {
 
         {/* FOOTER */}
         <div className="mt-20 pt-8 border-t border-white/5 text-center">
-          <p className="text-gray-600 text-[10px] tracking-[0.5em] uppercase italic">
-            Sabilah Mudrikah — © 2024
+          <p className="select-none text-gray-600 text-[10px] tracking-[0.5em] capitalize italic">
+            Sabilah Mudrikah — © 2026 All rights reserved.
           </p>
         </div>
       </div>

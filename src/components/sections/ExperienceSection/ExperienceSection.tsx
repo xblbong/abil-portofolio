@@ -149,30 +149,6 @@ export default function ExperienceSection() {
                     ))}
                 </div>
 
-                {/* Education - Dibuat lebih Minimalis */}
-                <div className="mt-24 p-8 bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-10 opacity-5">
-                        <GraduationCap size={120} className="text-purple-600" />
-                    </div>
-
-                    <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
-                        <div className="p-5 bg-purple-600/10 rounded-2xl text-purple-500 border border-purple-600/20">
-                            <GraduationCap size={32} />
-                        </div>
-                        <div className="flex-1 text-center md:text-left">
-                            <h4 className="text-2xl font-bold text-white capitalize italic tracking-tighter">Brawijaya University</h4>
-                            <p className="text-purple-500 text-xs font-bold capitalize tracking-[0.2em] mt-1">Information Technology • 2024 - 2027</p>
-                        </div>
-                        <div className="flex flex-wrap gap-2 justify-center">
-                            {["Web Dev", "Software Eng", "AI Enthusiast"].map(tag => (
-                                <span key={tag} className="text-[10px] px-3 py-1 bg-white/5 rounded-full border border-white/10 text-gray-400 capitalize font-bold tracking-widest">
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </section>
     );

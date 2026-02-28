@@ -93,7 +93,7 @@ export default function PremiumProfileCard({
         <div className="absolute inset-0 z-10 p-6 sm:p-8 flex flex-col justify-end">
           <div className="mb-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 w-fit">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]" />
-            <span className="text-[10px] uppercase tracking-[0.15em] text-white/90 font-bold">
+            <span className="text-[10px] capitalize tracking-[0.15em] text-white/90 font-bold">
               {status}
             </span>
           </div>
@@ -109,7 +109,7 @@ export default function PremiumProfileCard({
 
           <div className="mt-6 pt-6 border-t border-white/10 flex items-center justify-between">
             <div className="flex flex-col">
-              <span className="text-white/40 text-[10px] uppercase tracking-widest font-bold mb-1">Social Media</span>
+              <span className="text-white/40 text-[10px] capitalize tracking-widest font-bold mb-1">Social Media</span>
               <a 
                 href={`https://instagram.com/${handle}`} 
                 target="_blank" 

@@ -27,7 +27,7 @@ const navLinks = [
   },
   // isPending: true untuk yang belum ada kontennya
   { name: "Experience", href: "#experience", icon: <Briefcase size={18} />, isPending: false },
-  { name: "Certificates", href: "#certificates", icon: <Award size={18} />, isPending: true },
+  { name: "Certificates", href: "#certificates", icon: <Award size={18} />, isPending: false },
   { name: "Contact", href: "#contact", icon: <Mail size={18} />, isPending: false },
 ];
 
@@ -52,17 +52,16 @@ export default function Navbar() {
   if (!mounted) return null;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center p-4">
+    <header className="select-none fixed top-0 left-0 right-0 z-50 flex justify-center p-4">
       <nav className="w-full max-w-7xl backdrop-blur-xl bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl rounded-3xl md:rounded-full px-10 py-3 flex justify-between items-center transition-all duration-300">
         {/* Logo */}
-        <h1
-          className="font-bold text-2xl tracking-tighter
+        <a href="#" className="font-bold text-2xl tracking-tighter
             bg-gradient-to-r from-white via-purple-200 to-purple-400
             bg-clip-text text-transparent
             [filter:drop-shadow(0_0_2px_rgba(0,0,0,0.5))]"
         >
           PortoBila
-        </h1>
+        </a>
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex gap-1 items-center">
