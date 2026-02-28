@@ -28,6 +28,8 @@ export interface Certificate {
   id: string;
   title: string;
   issuer: string;
-  cert_url?: string;
   date?: string;
+  category: string; // Misal: "Frontend", "UI/UX", "Security"
+  image_url: string; // Foto sertifikat
+  cert_url?: string; // Link verifikasi
 }
