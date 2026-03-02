@@ -27,11 +27,11 @@ export const metadata: Metadata = {
     title: "Sabilah Mudrikah | Frontend Developer",
     description:
       "Portofolio profesional Sabilah Mudrikah, ahli dalam React, Next.js, dan 3D Web Development.",
-    url: "https://domain-kamu.com",
+    url: "https://abil-portofolio-six.vercel.app/",
     siteName: "Sabilah Mudrikah Portfolio",
     images: [
       {
-        url: "https://domain-kamu.com/og-image.png",
+        url: "/image/me.JPG",
         width: 1200,
         height: 630,
         alt: "Sabilah Mudrikah Portfolio",
