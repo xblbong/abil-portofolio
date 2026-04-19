@@ -1,130 +1,232 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
-import {
-  Sun,
-  Moon,
-  Menu,
-  X,
-  Award,
-  Code2,
-  Briefcase,
-  User,
-  FolderArchiveIcon,
-  Heart,
-  Mail,
-} from "lucide-react";
+import { Sun, Moon, Menu, X, Award, Code2, Briefcase, User, FolderOpen, Mail } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+// Anchor sections to observe (only on landing page "/")
+const ANCHOR_SECTIONS = ["about", "skills", "contact"];
 
 const navLinks = [
-  { name: "About", href: "#about", icon: <User size={18} />, isPending: false },
-  { name: "Skills", href: "#skills", icon: <Code2 size={18} />, isPending: false },
-  {
-    name: "MyProjects",
-    href: "#projects",
-    icon: <FolderArchiveIcon size={18} />,
-    isPending: false,
-  },
-  // isPending: true untuk yang belum ada kontennya
-  { name: "Experience", href: "#experience", icon: <Briefcase size={18} />, isPending: false },
-  { name: "Certificates", href: "#certificates", icon: <Award size={18} />, isPending: false },
-  { name: "Contact", href: "#contact", icon: <Mail size={18} />, isPending: false },
+  { name: "About",        href: "/#about",        sectionId: "about",        icon: <User size={16} /> },
+  { name: "Skills",       href: "/#skills",       sectionId: "skills",       icon: <Code2 size={16} /> },
+  { name: "Projects",     href: "/projects",      sectionId: null,           icon: <FolderOpen size={16} /> },
+  { name: "Experience",   href: "/experience",    sectionId: null,           icon: <Briefcase size={16} /> },
+  { name: "Certificates", href: "/certificates",  sectionId: null,           icon: <Award size={16} /> },
+  { name: "Contact",      href: "/#contact",      sectionId: "contact",      icon: <Mail size={16} /> },
 ];
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  // Which anchor section is currently visible (null = none / at top)
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const pathname = usePathname();
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
 
-  const handleNavClick = (e: React.MouseEvent, link: any) => {
-    if (link.isPending) {
-      e.preventDefault(); // Mencegah scroll ke id yang kosong
-      alert("Maaf ya fitur ini masih di proses Abil \nKalau kamu mau order jasa freelance bisa klik bagian menu kontak yaa! ><");
-    } else {
-      setIsOpen(false); // Tutup menu mobile jika link valid diklik
-    }
-  };
+    // Scroll-aware background
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // Only run IntersectionObserver on landing page
+    if (pathname !== "/") return () => window.removeEventListener("scroll", onScroll);
+
+    // Observe each section
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        // Trigger when section reaches ~30% of viewport height
+        rootMargin: "-20% 0px -60% 0px",
+        threshold: 0,
+      }
+    );
+
+    ANCHOR_SECTIONS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observerRef.current?.observe(el);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      observerRef.current?.disconnect();
+    };
+  }, [pathname]);
 
   if (!mounted) return null;
 
+  /**
+   * Determine if a nav link is "active":
+   * - Route links (/projects etc.) → active when pathname matches
+   * - Anchor links (/#about etc.) → active only when that section is in view
+   */
+  const isActive = (link: typeof navLinks[0]) => {
+    if (link.sectionId) {
+      // Anchor link: only active when section is in viewport
+      return pathname === "/" && activeSection === link.sectionId;
+    }
+    // Route link
+    return pathname === link.href;
+  };
+
   return (
-    <header className="select-none fixed top-0 left-0 right-0 z-50 flex justify-center p-4">
-      <nav className="w-full max-w-7xl backdrop-blur-xl bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl rounded-3xl md:rounded-full px-10 py-3 flex justify-between items-center transition-all duration-300">
+    <header className="select-none fixed top-0 left-0 right-0 z-50 flex justify-center p-4 transition-all duration-300">
+      <nav
+        className="w-full max-w-6xl px-6 py-3 flex justify-between items-center transition-all duration-500 rounded-2xl"
+        style={{
+          background: scrolled ? "rgba(6,4,20,0.88)" : "rgba(6,4,20,0.5)",
+          border: "1px solid rgba(139,92,246,0.15)",
+          backdropFilter: "blur(20px)",
+          boxShadow: scrolled
+            ? "0 4px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(139,92,246,0.08)"
+            : "none",
+        }}
+      >
         {/* Logo */}
-        <a href="#" className="font-bold text-2xl tracking-tighter
-            bg-gradient-to-r from-white via-purple-200 to-purple-400
-            bg-clip-text text-transparent
-            [filter:drop-shadow(0_0_2px_rgba(0,0,0,0.5))]"
+        <Link
+          href="/"
+          className="font-black text-xl tracking-tighter shrink-0"
+          style={{
+            background: "linear-gradient(135deg, #ffffff 0%, #c4b5fd 60%, #a78bfa 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
         >
           PortoBila
-        </a>
+        </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex gap-1 items-center">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={(e) => handleNavClick(e, link)}
-              className="px-4 py-2 rounded-full text-lg font-medium 
-             text-white
-             hover:bg-white/10 dark:hover:bg-white/5 
-             transition-all relative group"
-            >
-              <span className="relative z-10">{link.name}</span>
-              <motion.div className="absolute inset-0 bg-purple-300/80 rounded-full scale-0 group-hover:scale-100 transition-transform origin-center" />
-            </a>
-          ))}
+        <div className="hidden lg:flex gap-0.5 items-center">
+          {navLinks.map((link) => {
+            const active = isActive(link);
+            return (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200"
+                style={{
+                  color: active ? "#c4b5fd" : "rgba(196,181,253,0.5)",
+                  background: active ? "rgba(139,92,246,0.12)" : "transparent",
+                }}
+                onMouseEnter={(e) => {
+                  if (!active) {
+                    e.currentTarget.style.color = "rgba(196,181,253,0.85)";
+                    e.currentTarget.style.background = "rgba(139,92,246,0.07)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!active) {
+                    e.currentTarget.style.color = "rgba(196,181,253,0.5)";
+                    e.currentTarget.style.background = "transparent";
+                  }
+                }}
+              >
+                {link.name}
+                {/* Active dot indicator */}
+                {active && (
+                  <motion.div
+                    layoutId="navActiveDot"
+                    className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
+                    style={{ background: "#a78bfa" }}
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+              </Link>
+            );
+          })}
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2">
+        {/* Right actions */}
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="p-2.5 rounded-full bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 transition-colors"
+            aria-label="Toggle theme"
+            className="p-2 rounded-xl transition-all duration-200"
+            style={{
+              color: "rgba(196,181,253,0.5)",
+              background: "rgba(139,92,246,0.08)",
+              border: "1px solid rgba(139,92,246,0.12)",
+            }}
           >
-            {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
           </button>
 
-          {/* Mobile Toggle */}
+          {/* Mobile toggle */}
           <button
-            className="lg:hidden p-2.5 rounded-full bg-gray-500/10"
+            aria-label="Open menu"
+            className="lg:hidden p-2 rounded-xl transition-all duration-200"
+            style={{
+              color: "rgba(196,181,253,0.5)",
+              background: "rgba(139,92,246,0.08)",
+              border: "1px solid rgba(139,92,246,0.12)",
+            }}
             onClick={() => setIsOpen(!isOpen)}
           >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
+            {isOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-20 left-4 right-4 bg-white/90 dark:bg-black/90 backdrop-blur-2xl border border-white/20 rounded-3xl p-6 shadow-2xl lg:hidden flex flex-col gap-4"
+            initial={{ opacity: 0, y: -8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="absolute top-[72px] left-4 right-4 p-3 rounded-2xl lg:hidden flex flex-col"
+            style={{
+              background: "rgba(6,4,20,0.96)",
+              border: "1px solid rgba(139,92,246,0.18)",
+              backdropFilter: "blur(24px)",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.7)",
+            }}
           >
-            {navLinks.map((link, index) => (
-              <motion.a
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05 }}
-                key={link.name}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link)}
-                className="flex items-center gap-4 p-3 rounded-2xl hover:bg-purple-500/10 transition-colors group"
-              >
-                <div className="p-2 rounded-lg bg-purple-500/10 text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-all">
-                  {link.icon}
-                </div>
-                <span className="text-lg font-medium">{link.name}</span>
-              </motion.a>
-            ))}
+            {navLinks.map((link, idx) => {
+              const active = isActive(link);
+              return (
+                <motion.div
+                  key={link.name}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.035 }}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200"
+                    style={{
+                      background: active ? "rgba(139,92,246,0.12)" : "transparent",
+                      color: active ? "#c4b5fd" : "rgba(196,181,253,0.5)",
+                    }}
+                  >
+                    <div
+                      className="p-1.5 rounded-lg"
+                      style={{
+                        background: active ? "rgba(139,92,246,0.2)" : "rgba(139,92,246,0.08)",
+                        color: active ? "#a78bfa" : "rgba(167,139,250,0.4)",
+                      }}
+                    >
+                      {link.icon}
+                    </div>
+                    <span className="text-sm font-medium">{link.name}</span>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </motion.div>
         )}
       </AnimatePresence>

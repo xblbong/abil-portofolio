@@ -133,13 +133,6 @@ export default function ContactSection() {
           </div> */}
 
         </div>
-
-        {/* FOOTER */}
-        <div className="mt-20 pt-8 border-t border-white/5 text-center">
-          <p className="select-none text-gray-600 text-[10px] tracking-[0.5em] capitalize italic">
-            Sabilah Mudrikah — © 2026 All rights reserved.
-          </p>
-        </div>
       </div>
     </section>
   );

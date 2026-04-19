@@ -1,3 +1,5 @@
+export type ProjectType = "web" | "design" | "video";
+
 export interface Project {
   id: string;
   title: string;
@@ -6,6 +8,8 @@ export interface Project {
   link_demo?: string;
   link_github?: string;
   tech_stack: string[];
+  type: ProjectType;
+  featured?: boolean;
 }
 
 export interface Skill {
@@ -15,21 +19,23 @@ export interface Skill {
   level?: number;
 }
 
-export interface Experience {
+export interface ExperienceItem {
   id: string;
+  category: "professional" | "leadership";
+  title: string;
   company: string;
-  role: string;
-  description: string;
-  start_date: string;
-  end_date?: string; // Jika null, berarti "Present"
+  period: string;
+  points: string[];
+  impact: string;
 }
 
 export interface Certificate {
   id: string;
   title: string;
   issuer: string;
-  date?: string;
-  category: string; // Misal: "Frontend", "UI/UX", "Security"
-  image_url: string; // Foto sertifikat
-  cert_url?: string; // Link verifikasi
+  date: string;
+  category: "Technical" | "Academic" | "Frontend" | "Leadership";
+  image_url: string;
+  cert_url?: string;
+  featured?: boolean;
 }

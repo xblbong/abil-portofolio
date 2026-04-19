@@ -1,152 +1,192 @@
 "use client";
 import { motion } from "framer-motion";
-import { Award, ExternalLink, ShieldCheck, Search } from "lucide-react";
+import { ShieldCheck, ExternalLink, Search, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
+import { featuredCertificates } from "@/src/data/certificates";
 
-const certificates = [
-  {
-    id: "1",
-    title: "Junior Web Developer (BNSP)",
-    issuer: "LSP Teknologi Digital",
-    date: "2024",
-    category: "Technical",
-    image_url: "/cert/bnsp.jpg", 
-    cert_url: "#"
-  },
-  {
-    id: "2",
-    title: "Top Achiever - Frontend Path",
-    issuer: "IDCamp x Dicoding",
-    date: "2024",
-    category: "Technical",
-    image_url: "/cert/dicoding.jpg",
-    cert_url: "#"
-  },
-  {
-    id: "3",
-    title: "Information Technology Minor Website",
-    issuer: "Brawijaya University",
-    date: "2024",
-    category: "Academic",
-    image_url: "/cert/ub.jpg",
-    cert_url: "#"
-  },
-  {
-    id: "4",
-    title: "Responsive Web Design",
-    issuer: "FreeCodeCamp",
-    date: "2023",
-    category: "Frontend",
-    image_url: "/cert/fcc.jpg",
-    cert_url: "#"
-  }
-  // Tambahkan sertifikat lainnya di sini...
-];
+const catColors: Record<string, string> = {
+  Technical: "#a78bfa",
+  Frontend: "#34d399",
+  Academic: "#60a5fa",
+  Leadership: "#f472b6",
+};
 
 export default function CertificatesSection() {
-  const [selectedImg, setSelectedImg] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState<string | null>(null);
 
   return (
-    <section id="certificates" className="py-24 bg-[#050505] font-lexend relative overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] bg-purple-600/5 blur-[120px] rounded-full -z-10" />
+    <section
+      id="certificates"
+      className="py-24 relative overflow-hidden"
+      style={{ background: "#04030c" }}
+    >
+      {/* Ambient glow */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse, rgba(124,58,237,0.05) 0%, transparent 70%)",
+        }}
+      />
 
-      <div className="container mx-auto px-6 max-w-6xl">
-        
+      <div className="relative container mx-auto px-6 md:px-12 lg:px-20 max-w-7xl">
         {/* Header */}
-        <div className="text-center mb-16 space-y-4">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full text-purple-400 text-xs font-bold tracking-[0.2em] capitalize"
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
           >
-            <ShieldCheck size={14} /> Verified Credentials
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase mb-4"
+              style={{
+                background: "rgba(167,139,250,0.1)",
+                border: "1px solid rgba(167,139,250,0.2)",
+                color: "#a78bfa",
+              }}
+            >
+              <ShieldCheck size={11} />
+              Verified Credentials
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-none">
+              <span className="text-white">Proof of</span>{" "}
+              <span
+                className="text-transparent bg-clip-text"
+                style={{ backgroundImage: "linear-gradient(135deg, #a78bfa, #c4b5fd)" }}
+              >
+                Expertise.
+              </span>
+            </h2>
+            <p className="mt-3 text-sm max-w-md" style={{ color: "rgba(196,181,253,0.5)" }}>
+              Certifications that validate my skills — from national licensing to global platforms.
+            </p>
           </motion.div>
-          <h2 className="text-4xl md:text-6xl font-black italic text-white capitalize tracking-tighter">
-            Badges of <span className="text-purple-600">Honor.</span>
-          </h2>
-          <p className="text-gray-500 max-w-xl mx-auto italic text-sm md:text-base">
-            Professional certifications and learning milestones that validate my technical expertise.
-          </p>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <Link
+              href="/certificates"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 group hover:-translate-y-0.5"
+              style={{
+                background: "rgba(139,92,246,0.12)",
+                border: "1px solid rgba(139,92,246,0.3)",
+                color: "#a78bfa",
+              }}
+            >
+              View All
+              <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </motion.div>
         </div>
 
-        {/* Grid Sertifikat */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
-          {certificates.map((cert, idx) => (
-            <motion.div
-              key={cert.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              className="group relative bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-purple-600/30 transition-all shadow-2xl"
-            >
-              <div className="flex flex-col md:flex-row h-full">
-                {/* Image Preview */}
-                <div className="relative w-full md:w-2/5 h-48 md:h-auto overflow-hidden bg-purple-900/10">
-                  <img 
-                    src={cert.image_url} 
+        {/* Certificate Grid — featured only */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {featuredCertificates.map((cert, idx) => {
+            const color = catColors[cert.category] ?? "#a78bfa";
+            return (
+              <motion.div
+                key={cert.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1, duration: 0.5 }}
+                viewport={{ once: true }}
+                className="group relative rounded-2xl overflow-hidden transition-all duration-300"
+                style={{
+                  background: "linear-gradient(145deg, #0f0c1e, #0a0817)",
+                  border: "1px solid rgba(139,92,246,0.1)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.border = `1px solid ${color}35`;
+                  e.currentTarget.style.boxShadow = `0 8px 32px rgba(0,0,0,0.5)`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.border = "1px solid rgba(139,92,246,0.1)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                {/* Image */}
+                <div className="relative h-36 overflow-hidden bg-[#0a0817]">
+                  <img
+                    src={cert.image_url}
                     alt={cert.title}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500"
+                    className="w-full h-full object-cover transition-all duration-700 grayscale group-hover:grayscale-0 group-hover:scale-105 opacity-60 group-hover:opacity-90"
                   />
-                  <button 
-                    onClick={() => setSelectedImg(cert.image_url)}
-                    className="absolute inset-0 bg-purple-600/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f0c1e] via-[#0f0c1e]/40 to-transparent" />
+                  <button
+                    onClick={() => setLightbox(cert.image_url)}
+                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                   >
-                    <Search className="text-white" size={32} />
+                    <div
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold text-white"
+                      style={{ background: `${color}25`, border: `1px solid ${color}40`, backdropFilter: "blur(10px)" }}
+                    >
+                      <Search size={10} /> Preview
+                    </div>
                   </button>
+                  <div className="absolute top-2 left-2">
+                    <span
+                      className="px-2 py-0.5 rounded-full text-[9px] font-bold tracking-widest uppercase"
+                      style={{ background: `${color}20`, border: `1px solid ${color}40`, color }}
+                    >
+                      {cert.category}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-8 flex-1 flex flex-col justify-between">
-                  <div>
-                    <div className="flex justify-between items-start mb-4">
-                      <span className="text-[10px] font-bold text-purple-500 capitalize tracking-widest px-2 py-1 bg-purple-500/10 rounded-md">
-                        {cert.category}
-                      </span>
-                      <span className="text-xs text-gray-600 font-bold italic">{cert.date}</span>
-                    </div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-purple-400 transition leading-snug">
-                      {cert.title}
-                    </h3>
-                    <p className="text-gray-500 text-sm mt-2">{cert.issuer}</p>
-                  </div>
-
-                  <div className="mt-6 pt-6 border-t border-white/5">
-                    <a 
-                      href={cert.cert_url} 
-                      target="_blank"
-                      className="flex items-center gap-2 text-[10px] font-bold text-gray-400 hover:text-white capitalize tracking-[0.2em] transition"
-                    >
-                      Verify Credential <ExternalLink size={12} />
-                    </a>
-                  </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-white text-xs leading-snug mb-1 group-hover:text-purple-300 transition-colors line-clamp-2">
+                    {cert.title}
+                  </h3>
+                  <p className="text-[11px] mb-3" style={{ color: "rgba(196,181,253,0.4)" }}>
+                    {cert.issuer} · {cert.date}
+                  </p>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* Info Tambahan (UX: Mengurangi keriuhan) */}
-        <div className="mt-16 text-center">
-          <p className="text-gray-600 text-sm italic">
-            And 10+ other technical & leadership certifications...
-          </p>
-        </div>
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mt-10"
+        >
+          <Link
+            href="/certificates"
+            className="text-sm font-medium transition-colors duration-200 inline-flex items-center gap-1.5"
+            style={{ color: "rgba(196,181,253,0.4)" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "#c4b5fd"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "rgba(196,181,253,0.4)"}
+          >
+            View all certifications <ArrowRight size={13} />
+          </Link>
+        </motion.div>
       </div>
 
-      {/* Lightbox / Preview Modal (UX: User ga perlu pindah tab buat liat gambar) */}
-      {selectedImg && (
-        <div 
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-10 cursor-zoom-out"
-          onClick={() => setSelectedImg(null)}
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-6 cursor-zoom-out"
+          style={{ background: "rgba(3,2,12,0.95)", backdropFilter: "blur(20px)" }}
+          onClick={() => setLightbox(null)}
         >
-          <motion.img 
-            initial={{ scale: 0.9, opacity: 0 }}
+          <motion.img
+            initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            src={selectedImg} 
-            className="max-w-full max-h-full rounded-xl shadow-2xl border border-white/10"
+            src={lightbox}
+            alt="Certificate"
+            className="max-w-full max-h-full rounded-2xl shadow-2xl"
+            style={{ border: "1px solid rgba(167,139,250,0.2)" }}
+            onClick={(e) => e.stopPropagation()}
           />
-          <button className="absolute top-10 right-10 text-white text-4xl font-light">&times;</button>
         </div>
       )}
     </section>
