@@ -23,7 +23,7 @@ export default function HeroSection() {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-600/20 blur-[120px] rounded-full z-0 pointer-events-none" />
 
                 <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center z-10">
-                    
+
                     {/* LEFT CONTENT: Text & SEO */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -59,8 +59,8 @@ export default function HeroSection() {
                             </motion.a>
 
                             <motion.a
-                                href="/file/cv-amba.pdf"
-                                download="cv-sabilah-mudrikah.pdf"
+                                href="/file/Frontend-cv-SabilahMudrikah.pdf"
+                                download="Frontend-cv-SabilahMudrikah.pdf"
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 className="px-8 py-4 border border-white/10 bg-white/5 hover:bg-white/10 rounded-2xl font-bold backdrop-blur-md flex items-center justify-center gap-2 transition-all"
@@ -90,7 +90,7 @@ export default function HeroSection() {
                     </motion.div>
 
                     {/* RIGHT CONTENT: Card */}
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 1, delay: 0.2 }}
