@@ -54,17 +54,20 @@ export default function AboutSection() {
 
                         <div className="space-y-6 text-gray-400 text-[14px] sm:text-[15px] md:text-[16px] lg:text-[18px] leading-relaxed font-medium">
                             <p>
-                                Hi, I’m <span className="text-white font-semibold">Sabilah Mudrikah</span> based in Indonesia, specializing in building high-performance, responsive websites using <span className="text-white font-semibold">React, Next.js, and Tailwind CSS</span>. The focus is on delivering digital products where technical precision meets thoughtful design, ensuring every interface is not only functional but also intuitive and visually polished to meet modern user standards.
+                                Hi, I’m <span className="text-white font-semibold">Sabilah Mudrikah</span> a Frontend Developer based in Malang, Indonesia. I specialize in building high-performance, responsive websites using <span className="text-white font-semibold">React, Next.js, and ailwind CSS</span>.
                             </p>
-
                             <p>
-                                Background in <span className="text-white font-semibold">photography and video editing</span> provides a sharper eye for layout, motion, and visual hierarchy, allowing for a more holistic approach to web development. This multidisciplinary perspective enables fast iteration and seamless collaboration in fast-paced environments, bridging the gap between technical logic and compelling aesthetics to create meaningful digital experiences.
+                                My focus is on delivering digital products where technical precision meets thoughtful design. Whether I'm building innovation platforms at Brawijaya University or advocating for tech standards as a  <span className="text-white font-semibold">Google Student Ambassador,</span>s I ensure every interface is not only functional but also intuitive and visually polished.
+                            </p>
+                            <p>
+                                Coming from a background in <span className="text-white font-semibold">photography and video editing</span>, I have developed a sharp eye for layout, motion, and visual hierarchy. This multidisciplinary approach allows me to bridge the gap between complex technical logic and compelling aesthetics, enabling fast iterations and seamless collaboration in dynamic environments. I build worlds people want to interact with.
                             </p>
 
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="mt-8 mx-auto lg:mx-0 px-10 py-4 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full text-white font-bold tracking-[0.3em] text-[11px] sm:text-xs md:text-sm"
+                                className="mt-5 mx-auto lg:mx-0 px-10 py-4 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full text-white font-bold tracking-[0.3em] text-[11px] sm:text-xs md:text-sm"
+                                onClick={() => window.location.href = "#contact"}
                             >
                                 Let’s work together!
                             </motion.button>
