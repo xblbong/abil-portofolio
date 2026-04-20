@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { ShieldCheck, ExternalLink, Search, ArrowRight } from "lucide-react";
+import { ShieldCheck, Search, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { featuredCertificates } from "@/src/data/certificates";
@@ -19,7 +19,7 @@ export default function CertificatesSection() {
     <section
       id="certificates"
       className="py-24 relative overflow-hidden"
-      style={{ background: "#04030c" }}
+      style={{ background: "var(--bg-section)" }}
     >
       {/* Ambient glow */}
       <div
@@ -29,7 +29,7 @@ export default function CertificatesSection() {
         }}
       />
 
-      <div className="relative container mx-auto px-6 md:px-12 lg:px-20 max-w-7xl">
+      <div className="relative container mx-auto px-4 sm:px-6 md:px-12 lg:px-20 max-w-7xl">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14">
           <motion.div
@@ -50,15 +50,15 @@ export default function CertificatesSection() {
               Verified Credentials
             </div>
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-none">
-              <span className="text-white">Proof of</span>{" "}
+              <span style={{ color: "var(--text-1)" }}>Proof of</span>{" "}
               <span
                 className="text-transparent bg-clip-text"
-                style={{ backgroundImage: "linear-gradient(135deg, #a78bfa, #c4b5fd)" }}
+                style={{ backgroundImage: "linear-gradient(135deg, var(--purple-400), var(--purple-300))" }}
               >
                 Expertise.
               </span>
             </h2>
-            <p className="mt-3 text-sm max-w-md" style={{ color: "rgba(196,181,253,0.5)" }}>
+            <p className="mt-3 text-sm max-w-md" style={{ color: "var(--text-2)" }}>
               Certifications that validate my skills — from national licensing to global platforms.
             </p>
           </motion.div>
@@ -75,7 +75,7 @@ export default function CertificatesSection() {
               style={{
                 background: "rgba(139,92,246,0.12)",
                 border: "1px solid rgba(139,92,246,0.3)",
-                color: "#a78bfa",
+                color: "var(--purple-400)",
               }}
             >
               View All
@@ -88,6 +88,8 @@ export default function CertificatesSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {featuredCertificates.map((cert, idx) => {
             const color = catColors[cert.category] ?? "#a78bfa";
+            const imageUrl = cert.image_url?.trim();
+            const hasImage = Boolean(imageUrl);
             return (
               <motion.div
                 key={cert.id}
@@ -97,37 +99,58 @@ export default function CertificatesSection() {
                 viewport={{ once: true }}
                 className="group relative rounded-2xl overflow-hidden transition-all duration-300"
                 style={{
-                  background: "linear-gradient(145deg, #0f0c1e, #0a0817)",
-                  border: "1px solid rgba(139,92,246,0.1)",
+                  background: "var(--bg-surface)",
+                  border: "1px solid var(--border)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.border = `1px solid ${color}35`;
                   e.currentTarget.style.boxShadow = `0 8px 32px rgba(0,0,0,0.5)`;
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.border = "1px solid rgba(139,92,246,0.1)";
+                  e.currentTarget.style.border = "1px solid var(--border)";
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
                 {/* Image */}
                 <div className="relative h-36 overflow-hidden bg-[#0a0817]">
-                  <img
-                    src={cert.image_url}
-                    alt={cert.title}
-                    className="w-full h-full object-cover transition-all duration-700 grayscale group-hover:grayscale-0 group-hover:scale-105 opacity-60 group-hover:opacity-90"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f0c1e] via-[#0f0c1e]/40 to-transparent" />
-                  <button
-                    onClick={() => setLightbox(cert.image_url)}
-                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
+                  {hasImage ? (
+                    <img
+                      src={imageUrl}
+                      alt={cert.title}
+                      className="w-full h-full object-cover transition-all duration-700 grayscale group-hover:grayscale-0 group-hover:scale-105 opacity-60 group-hover:opacity-90"
+                    />
+                  ) : (
                     <div
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold text-white"
-                      style={{ background: `${color}25`, border: `1px solid ${color}40`, backdropFilter: "blur(10px)" }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-2"
+                      style={{
+                        background: "radial-gradient(circle at 30% 20%, rgba(167,139,250,0.18) 0%, rgba(10,8,23,0.2) 55%, rgba(10,8,23,1) 100%)",
+                      }}
                     >
-                      <Search size={10} /> Preview
+                      <div
+                        className="w-10 h-10 rounded-2xl grid place-items-center"
+                        style={{ background: `${color}22`, border: `1px solid ${color}35` }}
+                      >
+                        <ShieldCheck size={18} style={{ color }} />
+                      </div>
+                      <span className="text-[10px] font-semibold tracking-wide" style={{ color: "var(--text-3)" }}>
+                        No preview image
+                      </span>
                     </div>
-                  </button>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f0c1e] via-[#0f0c1e]/40 to-transparent" />
+                  {hasImage && (
+                    <button
+                      onClick={() => setLightbox(imageUrl)}
+                      className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <div
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold text-white"
+                        style={{ background: `${color}25`, border: `1px solid ${color}40`, backdropFilter: "blur(10px)" }}
+                      >
+                        <Search size={10} /> Preview
+                      </div>
+                    </button>
+                  )}
                   <div className="absolute top-2 left-2">
                     <span
                       className="px-2 py-0.5 rounded-full text-[9px] font-bold tracking-widest uppercase"
@@ -140,10 +163,13 @@ export default function CertificatesSection() {
 
                 {/* Content */}
                 <div className="p-4">
-                  <h3 className="font-bold text-white text-xs leading-snug mb-1 group-hover:text-purple-300 transition-colors line-clamp-2">
+                  <h3
+                    className="font-bold text-xs leading-snug mb-1 group-hover:text-purple-400 transition-colors line-clamp-2"
+                    style={{ color: "var(--text-1)" }}
+                  >
                     {cert.title}
                   </h3>
-                  <p className="text-[11px] mb-3" style={{ color: "rgba(196,181,253,0.4)" }}>
+                  <p className="text-[11px] mb-3" style={{ color: "var(--text-3)" }}>
                     {cert.issuer} · {cert.date}
                   </p>
                 </div>
@@ -162,9 +188,9 @@ export default function CertificatesSection() {
           <Link
             href="/certificates"
             className="text-sm font-medium transition-colors duration-200 inline-flex items-center gap-1.5"
-            style={{ color: "rgba(196,181,253,0.4)" }}
-            onMouseEnter={(e) => e.currentTarget.style.color = "#c4b5fd"}
-            onMouseLeave={(e) => e.currentTarget.style.color = "rgba(196,181,253,0.4)"}
+            style={{ color: "var(--text-3)" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "var(--purple-400)"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-3)"}
           >
             View all certifications <ArrowRight size={13} />
           </Link>

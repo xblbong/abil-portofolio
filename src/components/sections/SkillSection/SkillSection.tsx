@@ -1,7 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 import ProfileCard3D from "../../canvas/ProfileCard3D";
+
 
 /* ─── SVG Icons ─── */
 function IconCode({ size = 16, color = "currentColor" }: { size?: number; color?: string }) {
@@ -79,7 +81,7 @@ const skillCategories = [
     {
         cat: "Design Tools",
         Icon: IconPalette,
-        color: "#E4B7E5",
+        color: "#9d54e0",
         items: [
             { name: "Figma", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg", color: "#F24E1E" },
             { name: "Canva", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/canva/canva-original.svg", color: "#00C4CC" },
@@ -102,13 +104,13 @@ const skillCategories = [
 
 const mainSkills = [
     { label: "Website Development", value: 87, color: "#b06fec" },
-    { label: "Graphic Designer", value: 83, color: "#E4B7E5" },
+    { label: "Graphic Designer", value: 83, color: "#9d54e0" },
     { label: "Photography", value: 90, color: "#815CAD" },
     { label: "Video Editing", value: 95, color: "#9A48D0" },
 ];
 
 /* ─── Individual Skill Icon Card ─── */
-function SkillIcon({ item, index }: { item: { name: string; icon: string; color: string }; index: number }) {
+function SkillIcon({ item, index, isDark }: { item: { name: string; icon: string; color: string }; index: number; isDark: boolean }) {
     const [hovered, setHovered] = useState(false);
     return (
         <motion.div
@@ -127,22 +129,19 @@ function SkillIcon({ item, index }: { item: { name: string; icon: string; color:
                 className="relative w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-2xl flex items-center justify-center transition-all duration-300"
                 style={{
                     background: hovered
-                        ? `linear-gradient(145deg, ${item.color}18, ${item.color}08)`
-                        : "rgba(255,255,255,0.03)",
+                        ? `linear-gradient(145deg, ${item.color}22, ${item.color}0a)`
+                        : isDark ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.65)",
                     border: hovered
                         ? `1px solid ${item.color}60`
-                        : "1px solid rgba(255,255,255,0.08)",
+                        : isDark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(139,92,246,0.15)",
                     boxShadow: hovered
-                        ? `0 0 20px ${item.color}25, 0 8px 25px rgba(0,0,0,0.3)`
+                        ? `0 0 20px ${item.color}25, 0 8px 25px ${isDark ? "rgba(0,0,0,0.3)" : "rgba(139,92,246,0.12)"}`
                         : "none",
                 }}
             >
-                {/* Glow behind icon on hover */}
                 <div
                     className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{
-                        background: `radial-gradient(circle at center, ${item.color}20, transparent 70%)`,
-                    }}
+                    style={{ background: `radial-gradient(circle at center, ${item.color}20, transparent 70%)` }}
                 />
                 <img
                     src={item.icon}
@@ -155,7 +154,7 @@ function SkillIcon({ item, index }: { item: { name: string; icon: string; color:
             {/* Label */}
             <span
                 className="text-[10px] sm:text-xs font-medium tracking-wide transition-colors duration-300 text-center leading-tight"
-                style={{ color: hovered ? item.color : "rgba(255,255,255,0.5)" }}
+                style={{ color: hovered ? item.color : isDark ? "rgba(255,255,255,0.5)" : "rgba(80,40,160,0.6)" }}
             >
                 {item.name}
             </span>
@@ -166,9 +165,17 @@ function SkillIcon({ item, index }: { item: { name: string; icon: string; color:
 /* ─── Main Component ─── */
 export default function SkillsSection() {
     const [activeTab, setActiveTab] = useState(0);
+    const { resolvedTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
+    const isDark = mounted ? resolvedTheme === "dark" : true;
 
     return (
-        <section id="skills" className="pt-32 py-20 bg-[#050505] overflow-hidden px-6 md:px-16 lg:px-20">
+        <section
+            id="skills"
+            className="pt-32 py-20 overflow-hidden px-6 md:px-16 lg:px-20"
+            style={{ background: isDark ? "#050505" : "transparent" }}
+        >
             <div className="container mx-auto px-2 sm:px-6">
                 <div className="grid lg:grid-cols-12 gap-12 xl:gap-16 items-start">
 
@@ -180,13 +187,19 @@ export default function SkillsSection() {
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8 }}
                         >
-                            <h2 className="text-4xl mt-12 md:text-6xl font-black italic text-white capitalize leading-none mb-6">
+                            <h2
+                                className="text-4xl mt-12 md:text-6xl font-black italic capitalize leading-none mb-6"
+                                style={{ color: "var(--text-1)" }}
+                            >
                                 Technical <br />
-                                <span className="text-transparent bg-clip-text pr-2 bg-gradient-to-r from-[#b06fec] to-purple-100">
+                                <span
+                                    className="text-transparent bg-clip-text pr-2"
+                                    style={{ backgroundImage: isDark ? "linear-gradient(135deg, #b06fec, #e9d5ff)" : "linear-gradient(135deg, #7c3aed, #a78bfa)" }}
+                                >
                                     Skills
                                 </span>
                             </h2>
-                            <p className="text-gray-400 text-lg max-w-xl">
+                            <p className="text-lg max-w-xl" style={{ color: "var(--text-2)" }}>
                                 Technologies and tools I use to craft modern, responsive, and user-friendly digital experiences.
                             </p>
                         </motion.div>
@@ -206,18 +219,37 @@ export default function SkillsSection() {
                                     className="relative flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold tracking-wide transition-all duration-300"
                                     style={{
                                         background: activeTab === idx
-                                            ? `linear-gradient(135deg, ${cat.color}30, ${cat.color}15)`
-                                            : "rgba(255,255,255,0.04)",
+                                            ? `linear-gradient(135deg, ${cat.color}28, ${cat.color}12)`
+                                            : isDark
+                                                ? "rgba(255,255,255,0.04)"
+                                                : "rgba(255,255,255,0.85)",
                                         border: activeTab === idx
-                                            ? `1px solid ${cat.color}50`
-                                            : "1px solid rgba(255,255,255,0.08)",
-                                        color: activeTab === idx ? cat.color : "rgba(255,255,255,0.5)",
+                                            ? `1px solid ${cat.color}55`
+                                            : isDark
+                                                ? "1px solid rgba(255,255,255,0.09)"
+                                                : "1px solid rgba(109,40,217,0.22)",
+                                        color: activeTab === idx
+                                            ? cat.color
+                                            : isDark
+                                                ? "rgba(255,255,255,0.5)"
+                                                : "rgba(90,40,180,0.7)",
                                         boxShadow: activeTab === idx
-                                            ? `0 0 15px ${cat.color}15`
-                                            : "none",
+                                            ? `0 0 18px ${cat.color}18, 0 2px 8px rgba(0,0,0,0.06)`
+                                            : isDark
+                                                ? "none"
+                                                : "0 1px 4px rgba(109,40,217,0.08)",
                                     }}
                                 >
-                                    <cat.Icon size={14} color={activeTab === idx ? cat.color : "rgba(255,255,255,0.4)"} />
+                                    <cat.Icon
+                                        size={14}
+                                        color={
+                                            activeTab === idx
+                                                ? cat.color
+                                                : isDark
+                                                    ? "rgba(255,255,255,0.4)"
+                                                    : "rgba(109,40,217,0.5)"
+                                        }
+                                    />
                                     {cat.cat}
                                 </button>
                             ))}
@@ -229,9 +261,13 @@ export default function SkillsSection() {
                             initial={{ opacity: 0, y: 16 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5 }}
-                            className="relative rounded-3xl border border-white/[0.06] bg-white/[0.015] backdrop-blur-sm p-6 sm:p-8"
+                            className="relative rounded-3xl backdrop-blur-sm p-6 sm:p-8"
                             style={{
-                                boxShadow: `inset 0 1px 0 rgba(255,255,255,0.04), 0 0 40px ${skillCategories[activeTab].color}08`,
+                                background: isDark ? "rgba(255,255,255,0.015)" : "rgba(255,255,255,0.6)",
+                                border: isDark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(139,92,246,0.15)",
+                                boxShadow: isDark
+                                    ? `inset 0 1px 0 rgba(255,255,255,0.04), 0 0 40px ${skillCategories[activeTab].color}08`
+                                    : `0 4px 24px rgba(139,92,246,0.08), 0 0 40px ${skillCategories[activeTab].color}06`,
                             }}
                         >
                             {/* Subtle top accent line */}
@@ -259,7 +295,7 @@ export default function SkillsSection() {
                                 >
                                     {skillCategories[activeTab].cat}
                                 </h4>
-                                <span className="ml-auto text-[10px] text-white/30 font-mono">
+                                <span className="ml-auto text-[10px] font-mono" style={{ color: isDark ? "rgba(255,255,255,0.3)" : "rgba(80,40,160,0.35)" }}>
                                     {skillCategories[activeTab].items.length} tools
                                 </span>
                             </div>
@@ -267,7 +303,7 @@ export default function SkillsSection() {
                             {/* Icons */}
                             <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 gap-4 sm:gap-5">
                                 {skillCategories[activeTab].items.map((item, idx) => (
-                                    <SkillIcon key={item.name} item={item} index={idx} />
+                                    <SkillIcon key={item.name} item={item} index={idx} isDark={isDark} />
                                 ))}
                             </div>
                         </motion.div>
@@ -296,7 +332,11 @@ export default function SkillsSection() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.15, duration: 0.5 }}
                                     viewport={{ once: true }}
-                                    className="group relative rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm p-5 hover:border-purple-400/30 transition-all duration-300"
+                                    className="group relative rounded-2xl backdrop-blur-sm p-5 transition-all duration-300"
+                                    style={{
+                                        background: isDark ? "rgba(255,255,255,0.02)" : "rgba(255,255,255,0.6)",
+                                        border: isDark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(139,92,246,0.15)",
+                                    }}
                                 >
                                     {/* Top accent */}
                                     <div
@@ -316,15 +356,19 @@ export default function SkillsSection() {
                                             <card.Icon size={18} color={card.color} />
                                         </div>
                                         <div>
-                                            <h4 className="text-sm font-bold text-white">{card.title}</h4>
-                                            <p className="text-[11px] text-white/40 mt-0.5">{card.desc}</p>
+                                            <h4 className="text-sm font-bold" style={{ color: "var(--text-1)" }}>{card.title}</h4>
+                                            <p className="text-[11px] mt-0.5" style={{ color: "var(--text-3)" }}>{card.desc}</p>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap gap-1.5">
                                         {card.tools.map((t) => (
                                             <span
                                                 key={t}
-                                                className="px-2.5 py-1 rounded-full text-[10px] bg-white/[0.04] text-white/50 hover:bg-purple-500/15 hover:text-purple-300 transition-colors duration-200"
+                                                className="px-2.5 py-1 rounded-full text-[10px] transition-colors duration-200"
+                                                style={{
+                                                    background: isDark ? "rgba(255,255,255,0.04)" : "rgba(139,92,246,0.07)",
+                                                    color: isDark ? "rgba(255,255,255,0.5)" : "rgba(80,40,160,0.6)",
+                                                }}
                                             >
                                                 {t}
                                             </span>

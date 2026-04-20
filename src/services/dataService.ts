@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import { Certificate, Experience, Project, Skill } from '../types';
+import { Certificate, ExperienceItem, Project, Skill } from '../types';
 
 export const getProjects = async (): Promise<Project[]> => {
   const { data } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
@@ -11,7 +11,7 @@ export const getSkills = async (): Promise<Skill[]> => {
   return data || [];
 };
 
-export const getExperiences = async (): Promise<Experience[]> => {
+export const getExperiences = async (): Promise<ExperienceItem[]> => {
   const { data } = await supabase.from('experience').select('*').order('start_date', { ascending: false });
   return data || [];
 };

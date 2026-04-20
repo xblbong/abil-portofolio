@@ -1,8 +1,9 @@
 "use client";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Globe, Palette, Video, LayoutGrid } from "lucide-react";
+import { ArrowLeft, Globe, Palette, Video, LayoutGrid, type LucideIcon } from "lucide-react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 import Navbar from "@/src/components/layout/NavbarComponents";
 import ProjectCard from "@/src/components/canvas/ProjectCard";
 import { allProjects } from "@/src/data/projects";
@@ -12,7 +13,7 @@ import Footer from "@/src/components/layout/Footer";
 
 type Tab = "all" | ProjectType;
 
-const tabs: { id: Tab; label: string; Icon: React.ElementType }[] = [
+const tabs: { id: Tab; label: string; Icon: LucideIcon }[] = [
   { id: "all", label: "All Work", Icon: LayoutGrid },
   { id: "web", label: "Web Dev", Icon: Globe },
   { id: "design", label: "Design", Icon: Palette },
@@ -28,6 +29,8 @@ const tabColors: Record<Tab, string> = {
 
 export default function ProjectsPage() {
   const [activeTab, setActiveTab] = useState<Tab>("all");
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   const filtered = useMemo(() =>
     activeTab === "all"
@@ -46,10 +49,7 @@ export default function ProjectsPage() {
   const accentColor = tabColors[activeTab];
 
   return (
-    <div
-      className="min-h-screen"
-      style={{ background: "linear-gradient(135deg, #03020c 0%, #06041a 50%, #03020c 100%)" }}
-    >
+    <div className="min-h-screen themed-page">
       <PageLoader minDuration={600} />
       <Navbar />
 
@@ -62,7 +62,7 @@ export default function ProjectsPage() {
         }}
       />
 
-      <main className="relative pt-32 pb-24 px-6 md:px-12 lg:px-20 max-w-7xl mx-auto">
+      <main className="relative pt-28 sm:pt-32 pb-20 sm:pb-24 px-4 sm:px-6 md:px-12 lg:px-20 max-w-7xl mx-auto">
 
         {/* Back button */}
         <motion.div
@@ -73,9 +73,9 @@ export default function ProjectsPage() {
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm font-medium mb-12 group transition-colors"
-            style={{ color: "rgba(196,181,253,0.5)" }}
-            onMouseEnter={(e) => e.currentTarget.style.color = "#a78bfa"}
-            onMouseLeave={(e) => e.currentTarget.style.color = "rgba(196,181,253,0.5)"}
+            style={{ color: "var(--text-3)" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = isDark ? "#a78bfa" : "#7c3aed"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-3)"}
           >
             <ArrowLeft size={15} className="transition-transform group-hover:-translate-x-1" />
             Back to Home
@@ -93,16 +93,16 @@ export default function ProjectsPage() {
             Portfolio
           </p>
           <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-6">
-            <span className="text-white">Selected</span>
+            <span style={{ color: "var(--text-1)" }}>Selected</span>
             <br />
             <span
               className="text-transparent bg-clip-text"
-              style={{ backgroundImage: `linear-gradient(135deg, ${accentColor}, #c4b5fd)` }}
+              style={{ backgroundImage: `linear-gradient(135deg, ${accentColor}, ${isDark ? "#c4b5fd" : "#7c3aed"})` }}
             >
               Work.
             </span>
           </h1>
-          <p className="text-lg max-w-xl" style={{ color: "rgba(196,181,253,0.55)" }}>
+          <p className="text-lg max-w-xl" style={{ color: "var(--text-2)" }}>
             A curated collection of projects across web development, design, and video — each built with purpose and attention to detail.
           </p>
         </motion.div>
@@ -123,9 +123,9 @@ export default function ProjectsPage() {
                 onClick={() => setActiveTab(tab.id)}
                 className="relative flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300"
                 style={{
-                  background: isActive ? `${color}18` : "rgba(255,255,255,0.04)",
-                  border: isActive ? `1px solid ${color}50` : "1px solid rgba(255,255,255,0.07)",
-                  color: isActive ? color : "rgba(196,181,253,0.4)",
+                  background: isActive ? `${color}18` : isDark ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.6)",
+                  border: isActive ? `1px solid ${color}50` : isDark ? "1px solid rgba(255,255,255,0.07)" : "1px solid rgba(139,92,246,0.18)",
+                  color: isActive ? color : isDark ? "rgba(196,181,253,0.4)" : "rgba(80,40,160,0.55)",
                   boxShadow: isActive ? `0 0 20px ${color}15` : "none",
                 }}
               >
@@ -134,8 +134,8 @@ export default function ProjectsPage() {
                 <span
                   className="text-[10px] font-mono px-1.5 py-0.5 rounded-md"
                   style={{
-                    background: isActive ? `${color}25` : "rgba(255,255,255,0.06)",
-                    color: isActive ? color : "rgba(196,181,253,0.35)",
+                    background: isActive ? `${color}25` : isDark ? "rgba(255,255,255,0.06)" : "rgba(139,92,246,0.07)",
+                    color: isActive ? color : isDark ? "rgba(196,181,253,0.35)" : "rgba(80,40,160,0.45)",
                   }}
                 >
                   {counts[tab.id]}
@@ -182,7 +182,7 @@ export default function ProjectsPage() {
             >
               <LayoutGrid size={24} className="text-purple-400/50" />
             </div>
-            <p className="text-white/30 text-sm">No projects in this category yet.</p>
+            <p className="text-sm" style={{ color: "var(--text-3)" }}>No projects in this category yet.</p>
           </motion.div>
         )}
 
@@ -192,7 +192,7 @@ export default function ProjectsPage() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center text-xs mt-20 tracking-wider"
-          style={{ color: "rgba(196,181,253,0.25)" }}
+          style={{ color: "var(--text-3)" }}
         >
           More projects coming soon — stay tuned.
         </motion.p>

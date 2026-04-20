@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, Briefcase, Users, Calendar, TrendingUp, Zap } from "lucide-react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 import Navbar from "@/src/components/layout/NavbarComponents";
 import { experiences, professionalExperiences, leadershipExperiences } from "@/src/data/experiences";
 import PageLoader from "@/src/components/ui/PageLoader";
@@ -17,9 +18,11 @@ const stats = [
 function ExperienceCard({
   item,
   index,
+  isDark,
 }: {
   item: (typeof experiences)[0];
   index: number;
+  isDark: boolean;
 }) {
   const isLeadership = item.category === "leadership";
   const accentColor = isLeadership ? "#f472b6" : "#a78bfa";
@@ -32,8 +35,10 @@ function ExperienceCard({
       viewport={{ once: true }}
       className="group relative rounded-2xl p-6 transition-all duration-300"
       style={{
-        background: "linear-gradient(145deg, #0f0c1e, #0a0817)",
-        border: "1px solid rgba(139,92,246,0.1)",
+        background: isDark
+          ? "linear-gradient(145deg, #0f0c1e, #0a0817)"
+          : "linear-gradient(145deg, rgba(255,255,255,0.88), rgba(243,232,255,0.7))",
+        border: isDark ? "1px solid rgba(139,92,246,0.1)" : "1px solid rgba(139,92,246,0.15)",
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.border = `1px solid ${accentColor}35`;
@@ -67,7 +72,8 @@ function ExperienceCard({
 
       {/* Title */}
       <h3
-        className="text-lg font-bold text-white mb-1 leading-snug group-hover:text-purple-300 transition-colors duration-200"
+        className="text-lg font-bold mb-1 leading-snug group-hover:text-purple-300 transition-colors duration-200"
+        style={{ color: "var(--text-1)" }}
       >
         {item.title}
       </h3>
@@ -78,7 +84,7 @@ function ExperienceCard({
       </p>
 
       {/* Period */}
-      <div className="flex items-center gap-1.5 mb-5" style={{ color: "rgba(196,181,253,0.4)" }}>
+      <div className="flex items-center gap-1.5 mb-5" style={{ color: "var(--text-3)" }}>
         <Calendar size={12} />
         <span className="text-xs">{item.period}</span>
       </div>
@@ -92,7 +98,7 @@ function ExperienceCard({
       {/* Points */}
       <ul className="space-y-2.5">
         {item.points.map((point, i) => (
-          <li key={i} className="flex gap-3 text-sm" style={{ color: "rgba(196,181,253,0.55)" }}>
+          <li key={i} className="flex gap-3 text-sm" style={{ color: "var(--text-2)" }}>
             <div
               className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
               style={{ background: accentColor, opacity: 0.6 }}
@@ -106,11 +112,11 @@ function ExperienceCard({
 }
 
 export default function ExperiencePage() {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
   return (
-    <div
-      className="min-h-screen"
-      style={{ background: "linear-gradient(135deg, #03020c 0%, #06041a 50%, #03020c 100%)" }}
-    >
+    <div className="min-h-screen themed-page">
       <PageLoader minDuration={600} />
       <Navbar />
 
@@ -122,16 +128,16 @@ export default function ExperiencePage() {
         }}
       />
 
-      <main className="relative pt-32 pb-24 px-6 md:px-12 lg:px-20 max-w-7xl mx-auto">
+      <main className="relative pt-28 sm:pt-32 pb-20 sm:pb-24 px-4 sm:px-6 md:px-12 lg:px-20 max-w-7xl mx-auto">
 
         {/* Back */}
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm font-medium mb-12 transition-colors"
-            style={{ color: "rgba(196,181,253,0.5)" }}
-            onMouseEnter={(e) => e.currentTarget.style.color = "#a78bfa"}
-            onMouseLeave={(e) => e.currentTarget.style.color = "rgba(196,181,253,0.5)"}
+            style={{ color: "var(--text-3)" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = isDark ? "#a78bfa" : "#7c3aed"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-3)"}
           >
             <ArrowLeft size={15} />
             Back to Home
@@ -149,14 +155,17 @@ export default function ExperiencePage() {
             My Journey
           </p>
           <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-6">
-            <span className="text-white">Growth &</span>
+            <span style={{ color: "var(--text-1)" }}>Growth &amp;</span>
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-300 to-fuchsia-300">
+            <span
+              className="text-transparent bg-clip-text"
+              style={{ backgroundImage: isDark ? "linear-gradient(135deg, #c4b5fd, #a78bfa, #e879f9)" : "linear-gradient(135deg, #7c3aed, #8b5cf6, #a855f7)" }}
+            >
               Impact.
             </span>
           </h1>
-          <p className="text-lg max-w-xl" style={{ color: "rgba(196,181,253,0.55)" }}>
-            Every role I've taken has shaped how I think, build, and lead. Here's a chronological look at my professional journey.
+          <p className="text-lg max-w-xl" style={{ color: "var(--text-2)" }}>
+            Every role I&apos;ve taken has shaped how I think, build, and lead. Here&apos;s a chronological look at my professional journey.
           </p>
         </motion.div>
 
@@ -172,8 +181,10 @@ export default function ExperiencePage() {
               key={stat.label}
               className="p-4 rounded-2xl text-center"
               style={{
-                background: "linear-gradient(145deg, #0f0c1e, #0a0817)",
-                border: "1px solid rgba(139,92,246,0.12)",
+                background: isDark
+                  ? "linear-gradient(145deg, #0f0c1e, #0a0817)"
+                  : "linear-gradient(145deg, rgba(255,255,255,0.85), rgba(243,232,255,0.65))",
+                border: isDark ? "1px solid rgba(139,92,246,0.12)" : "1px solid rgba(139,92,246,0.18)",
               }}
             >
               <div
@@ -182,8 +193,8 @@ export default function ExperiencePage() {
               >
                 <stat.icon size={16} className="text-purple-400" />
               </div>
-              <div className="text-2xl font-black text-white mb-1">{stat.value}</div>
-              <div className="text-[11px]" style={{ color: "rgba(196,181,253,0.45)" }}>{stat.label}</div>
+              <div className="text-2xl font-black mb-1" style={{ color: "var(--text-1)" }}>{stat.value}</div>
+              <div className="text-[11px]" style={{ color: "var(--text-3)" }}>{stat.label}</div>
             </div>
           ))}
         </motion.div>
@@ -211,17 +222,17 @@ export default function ExperiencePage() {
                 <Briefcase size={16} className="text-purple-400" />
               </div>
               <div>
-                <h2 className="text-sm font-bold tracking-[0.2em] uppercase text-white">
+                <h2 className="text-sm font-bold tracking-[0.2em] uppercase" style={{ color: "var(--text-1)" }}>
                   Professional Experience
                 </h2>
-                <p className="text-[11px]" style={{ color: "rgba(196,181,253,0.4)" }}>
+                <p className="text-[11px]" style={{ color: "var(--text-3)" }}>
                   {professionalExperiences.length} roles
                 </p>
               </div>
             </motion.div>
             <div className="space-y-4">
               {professionalExperiences.map((item, i) => (
-                <ExperienceCard key={item.id} item={item} index={i} />
+                <ExperienceCard key={item.id} item={item} index={i} isDark={isDark} />
               ))}
             </div>
           </div>
@@ -241,17 +252,17 @@ export default function ExperiencePage() {
                 <Users size={16} style={{ color: "#f472b6" }} />
               </div>
               <div>
-                <h2 className="text-sm font-bold tracking-[0.2em] uppercase text-white">
-                  Leadership & Volunteer
+                <h2 className="text-sm font-bold tracking-[0.2em] uppercase" style={{ color: "var(--text-1)" }}>
+                  Leadership &amp; Volunteer
                 </h2>
-                <p className="text-[11px]" style={{ color: "rgba(196,181,253,0.4)" }}>
+                <p className="text-[11px]" style={{ color: "var(--text-3)" }}>
                   {leadershipExperiences.length} roles
                 </p>
               </div>
             </motion.div>
             <div className="space-y-4">
               {leadershipExperiences.map((item, i) => (
-                <ExperienceCard key={item.id} item={item} index={i} />
+                <ExperienceCard key={item.id} item={item} index={i} isDark={isDark} />
               ))}
             </div>
           </div>
@@ -264,7 +275,7 @@ export default function ExperiencePage() {
           viewport={{ once: true }}
           className="text-center mt-24"
         >
-          <p className="text-sm mb-4" style={{ color: "rgba(196,181,253,0.4)" }}>
+          <p className="text-sm mb-4" style={{ color: "var(--text-3)" }}>
             Interested in working together?
           </p>
           <Link

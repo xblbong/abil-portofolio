@@ -115,7 +115,7 @@ export const allProjects: Project[] = [
     title: "Brand Identity — HMPSTI UB",
     description:
       "Perancangan identitas visual lengkap untuk HMPSTI UB Kabinet Gema Nirvana 2023, meliputi logo, color palette, typography, dan panduan penggunaan aset.",
-    image_url: "/image/project/hmpsti.png",
+    image_url: "/image/project/design_brand_identity.png",
     tech_stack: ["Figma", "Illustrator"],
   },
   {
@@ -125,7 +125,7 @@ export const allProjects: Project[] = [
     title: "UI/UX Design — Samba TI Portal",
     description:
       "Desain antarmuka portal orientasi mahasiswa baru dengan fokus pada kemudahan navigasi, user flow yang intuitif, dan visual yang sesuai identitas TI UB.",
-    image_url: "/image/project/sambati.png",
+    image_url: "/image/project/uiux_design_portal.png",
     tech_stack: ["Figma", "Canva"],
   },
   {
@@ -135,7 +135,7 @@ export const allProjects: Project[] = [
     title: "Social Media Kit — PSIK UB",
     description:
       "Desain konten media sosial terpadu untuk PSIK Brawijaya University. Termasuk template post, story, dan banner event berkonsep modern dan profesional.",
-    image_url: "/image/project/hmpsti.png",
+    image_url: "/image/project/social_media_kit.png",
     tech_stack: ["Canva", "Figma"],
   },
 
@@ -147,7 +147,7 @@ export const allProjects: Project[] = [
     title: "Aftermovie SAMBA TI 2025",
     description:
       "Video dokumentasi dan aftermovie acara orientasi mahasiswa baru Teknologi Informasi UB 2025. Dikerjakan dengan pemotongan cinematic dan color grading.",
-    image_url: "/image/project/sambati.png",
+    image_url: "/image/project/video_aftermovie.png",
     tech_stack: ["Filmora", "CapCut"],
   },
   {
@@ -157,7 +157,7 @@ export const allProjects: Project[] = [
     title: "Konten Video — PSIK UB",
     description:
       "Seri konten video edukasi dan promosi untuk PSIK Brawijaya University. Meliputi Reels, Short, dan video profile yang dioptimasi untuk media sosial.",
-    image_url: "/image/project/hmpsti.png",
+    image_url: "/image/project/video_content_psik.png",
     tech_stack: ["CapCut", "CCP"],
   },
 ];

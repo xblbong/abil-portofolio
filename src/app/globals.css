@@ -1,81 +1,311 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: linear-gradient(135deg,
-      #0c0117 0%,
-      #6f309f 30%,
-      #4a1268 60%,
-      #000 100%);
-  --foreground: #f5f5f5;
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS — theme-aware CSS variables  
+   next-themes adds class="dark" or class="light" to <html>
+═══════════════════════════════════════════ */
+
+/* Dark theme (default) */
+:root,
+.dark {
+  --bg-page:           #03020c;
+  --bg-page-gradient:  linear-gradient(135deg, #03020c 0%, #060419 50%, #03020c 100%);
+  --bg-section:        #04030d;
+  --bg-surface:        linear-gradient(145deg, #110e22, #0a0817);
+  --bg-surface-solid:  #0a0817;
+  --bg-nav:            rgba(6, 4, 20, 0.88);
+  --bg-nav-scrolled:   rgba(6, 4, 20, 0.95);
+  --bg-footer:         #04030c;
+
+  --border:            rgba(139, 92, 246, 0.12);
+  --border-hover:      rgba(139, 92, 246, 0.38);
+  --border-active:     rgba(139, 92, 246, 0.65);
+
+  --text-1:            #f3f2ff;
+  --text-2:            rgba(196, 181, 253, 0.65);
+  --text-3:            rgba(196, 181, 253, 0.38);
+  --text-inv:          #1c0838;
+
+  /* Purple accents (consistent across themes) */
+  --purple-300:        #c4b5fd;
+  --purple-400:        #a78bfa;
+  --purple-500:        #8b5cf6;
+  --purple-600:        #7c3aed;
+  --purple-700:        #6d28d9;
+
+  --shadow-card:       0 4px 24px rgba(0, 0, 0, 0.45);
+  --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.55);
+
+  --glow-ambient:      rgba(124, 58, 237, 0.15);
+  --glow-purple-sm:    rgba(124, 58, 237, 0.25);
+
+  --footer-accent-line: linear-gradient(90deg, transparent, rgba(167,139,250,0.5), transparent);
+  --footer-brand-bg: rgba(139,92,246,0.10);
+  --footer-brand-border: rgba(139,92,246,0.22);
+  --footer-brand-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 0 0 1px rgba(167,139,250,0.08);
+  --footer-brand-icon-bg: linear-gradient(135deg, rgba(167,139,250,0.25), rgba(196,181,253,0.08));
+  --footer-brand-icon-border: rgba(196,181,253,0.16);
+  --footer-brand-icon-fg: #c4b5fd;
+  --footer-wordmark-porto-grad: linear-gradient(135deg, #ffffff 0%, #d8b4fe 45%, #a78bfa 100%);
+  --footer-wordmark-bila-grad: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 60%, #e9d5ff 100%);
+  --footer-wordmark-porto-stroke: 0.35px rgba(255,255,255,0.12);
+  --footer-wordmark-bila-stroke: 0.35px rgba(255,255,255,0.08);
+  --footer-wordmark-porto-shadow: 0 6px 18px rgba(167,139,250,0.22);
+  --footer-wordmark-bila-shadow: 0 6px 18px rgba(167,139,250,0.24);
+  --footer-underline-grad: linear-gradient(90deg, #a78bfa, #c4b5fd);
+  --footer-link-hover: #c4b5fd;
+  --footer-social-fg: rgba(167,139,250,0.45);
+  --footer-social-bg: rgba(139,92,246,0.07);
+  --footer-social-border: rgba(139,92,246,0.14);
+  --footer-social-hover-fg: #a78bfa;
+  --footer-social-hover-bg: rgba(139,92,246,0.16);
+  --footer-social-hover-border: rgba(139,92,246,0.35);
+  --footer-divider: rgba(139,92,246,0.1);
+
+  /* Input/form */
+  --input-bg:          rgba(255,255,255,0.04);
+  --input-border:      rgba(139,92,246,0.18);
+  --input-focus:       rgba(139,92,246,0.5);
+
+  /* Mouse glow */
   --x: 50%;
   --y: 50%;
+
+  /* Scrollbar */
+  --scrollbar-thumb:       rgba(139, 92, 246, 0.3);
+  --scrollbar-thumb-hover: rgba(139, 92, 246, 0.55);
+}
+
+/* ────── Light theme ────── */
+.light {
+  /* White-to-purple gradient backgrounds */
+  --bg-page:           #fdfcff;
+  --bg-page-gradient:  linear-gradient(
+    150deg,
+    #ffffff 0%,
+    #f5eeff 20%,
+    #ede0ff 45%,
+    #dcc8ff 70%,
+    #f0e8ff 85%,
+    #ffffff 100%
+  );
+  --bg-section:        transparent;
+  --bg-surface:        linear-gradient(145deg, rgba(255,255,255,0.92), rgba(240,230,255,0.75));
+  --bg-surface-solid:  rgba(255, 255, 255, 0.88);
+  --bg-nav:            rgba(255, 253, 255, 0.82);
+  --bg-nav-scrolled:   rgba(255, 255, 255, 0.95);
+  --bg-footer:         rgba(243, 232, 255, 0.6);
+
+  --border:            rgba(139, 92, 246, 0.18);
+  --border-hover:      rgba(139, 92, 246, 0.42);
+  --border-active:     rgba(139, 92, 246, 0.68);
+
+  --text-1:            #1e0845;
+  --text-2:            rgba(80, 40, 160, 0.78);
+  --text-3:            rgba(80, 40, 160, 0.42);
+  --text-inv:          #f3f2ff;
+
+  --shadow-card:       0 4px 24px rgba(139, 92, 246, 0.1);
+  --shadow-card-hover: 0 8px 40px rgba(139, 92, 246, 0.22);
+
+  --glow-ambient:      rgba(139, 92, 246, 0.07);
+  --glow-purple-sm:    rgba(139, 92, 246, 0.14);
+
+  --footer-accent-line: linear-gradient(90deg, transparent, rgba(109,40,217,0.4), transparent);
+  --footer-brand-bg: rgba(255,255,255,0.55);
+  --footer-brand-border: rgba(109,40,217,0.22);
+  --footer-brand-shadow: 0 10px 24px rgba(76,29,149,0.10), 0 0 0 1px rgba(109,40,217,0.06);
+  --footer-brand-icon-bg: linear-gradient(135deg, rgba(109,40,217,0.16), rgba(167,139,250,0.10));
+  --footer-brand-icon-border: rgba(76,29,149,0.18);
+  --footer-brand-icon-fg: #7c3aed;
+  --footer-wordmark-porto-grad: linear-gradient(135deg, #2e1065 0%, #5b21b6 45%, #7c3aed 100%);
+  --footer-wordmark-bila-grad: linear-gradient(135deg, #5b21b6 0%, #7c3aed 55%, #a78bfa 100%);
+  --footer-wordmark-porto-stroke: 0.45px rgba(46,16,101,0.18);
+  --footer-wordmark-bila-stroke: 0.45px rgba(46,16,101,0.14);
+  --footer-wordmark-porto-shadow: 0 6px 16px rgba(76,29,149,0.18);
+  --footer-wordmark-bila-shadow: 0 6px 16px rgba(76,29,149,0.16);
+  --footer-underline-grad: linear-gradient(90deg, #7c3aed, #a78bfa);
+  --footer-link-hover: #7c3aed;
+  --footer-social-fg: rgba(109,40,217,0.5);
+  --footer-social-bg: rgba(139,92,246,0.06);
+  --footer-social-border: rgba(139,92,246,0.16);
+  --footer-social-hover-fg: #7c3aed;
+  --footer-social-hover-bg: rgba(139,92,246,0.12);
+  --footer-social-hover-border: rgba(139,92,246,0.35);
+  --footer-divider: rgba(139,92,246,0.12);
+
+  --input-bg:          rgba(255,255,255,0.7);
+  --input-border:      rgba(139,92,246,0.22);
+  --input-focus:       rgba(139,92,246,0.55);
+
+  --scrollbar-thumb:       rgba(139, 92, 246, 0.22);
+  --scrollbar-thumb-hover: rgba(139, 92, 246, 0.45);
+}
+
+/* ═══════════════════════════════════════════
+   GLOBAL BASE STYLES
+═══════════════════════════════════════════ */
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  /* Performance: tell browser content won't scroll horizontally */
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 9999px;
+  transition: background 0.2s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
 }
 
 body {
-  min-height: 200vh;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "Lexend", Helvetica, sans-serif;
+  background: var(--bg-page-gradient);
+  /* Fix: ensure background covers full height */
+  background-attachment: fixed;
+  color: var(--text-1);
+  font-family: "Google Sans", var(--font-google-sans), system-ui, sans-serif;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  /* Smooth theme switch */
+  transition: background-color 0.4s ease, color 0.25s ease;
+  /* GPU compositing hint */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-body::before {
+/* ═══════════════════════════════════════════
+   MOUSE GLOW — dark only
+═══════════════════════════════════════════ */
+.dark body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%),
-      rgba(250, 228, 228, 0.285),
-      rgba(118, 20, 210, 0.15) 30%,
-      transparent 65%);
+  z-index: 0;
+  background: radial-gradient(
+    600px circle at var(--x, 50%) var(--y, 50%),
+    rgba(176, 111, 236, 0.07),
+    rgba(118, 20, 210, 0.05) 35%,
+    transparent 65%
+  );
+  /* GPU layer — don't repaint, just composite */
+  will-change: background;
 }
 
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  /* background:
-    radial-gradient(circle at 20% 30%, rgba(176,111,236,.25), transparent 60%),
-    radial-gradient(circle at 80% 70%, rgba(118,20,210,.18), transparent 65%); */
-  animation: floatGlow 22s ease-in-out infinite alternate;
+/* ═══════════════════════════════════════════
+   NAVBAR STYLES
+═══════════════════════════════════════════ */
+.navbar-bg {
+  background: var(--bg-nav);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.navbar-bg.scrolled {
+  background: var(--bg-nav-scrolled);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.12), 0 0 0 1px var(--border);
 }
 
-@keyframes floatGlow {
-  0% {
-    transform: translate(0, 0);
-  }
+/* ═══════════════════════════════════════════
+   UTILITY CLASSES — themed building blocks
+═══════════════════════════════════════════ */
 
-  100% {
-    transform: translate(-40px, -30px);
-  }
+.themed-page {
+  background: var(--bg-page-gradient);
+  background-attachment: fixed;
+  min-height: 100dvh;
+  transition: background 0.4s ease;
 }
 
-/* navbar */
+.themed-section {
+  background: var(--bg-section);
+  transition: background 0.35s ease;
+}
+
+.themed-surface {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  transition: background 0.35s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.themed-surface:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.themed-footer {
+  background: var(--bg-footer);
+  border-color: var(--border);
+  transition: background 0.35s ease;
+}
+
+.text-themed-1 { color: var(--text-1); transition: color 0.25s ease; }
+.text-themed-2 { color: var(--text-2); transition: color 0.25s ease; }
+.text-themed-3 { color: var(--text-3); transition: color 0.25s ease; }
+
+/* Gradient text — adapts to theme */
+.gradient-text {
+  background: linear-gradient(135deg, var(--purple-500) 0%, var(--purple-400) 50%, var(--purple-300) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════
+   PERFORMANCE — GPU acceleration
+═══════════════════════════════════════════ */
+
+/* Framer Motion animated elements */
+[data-framer-motion] {
+  will-change: transform, opacity;
+}
+
+/* All sections — contain painting to avoid full-page repaints */
+section {
+  contain: layout style;
+}
+
+/* Heavy blur elements — promote to GPU layer */
+.blur-layer {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* ═══════════════════════════════════════════
+   NAVBAR UTILITY
+═══════════════════════════════════════════ */
 @layer utilities {
   .text-outline-soft {
     text-shadow:
       0 1px 2px rgba(0, 0, 0, 0.45),
       0 0 6px rgba(0, 0, 0, 0.35);
   }
-}
-
-/* caard premium */
-@layer utilities {
   .perspective-1000 {
     perspective: 1000px;
   }
 }
 
-/* card 3d */
+/* ═══════════════════════════════════════════
+   PROFILE CARD 3D
+═══════════════════════════════════════════ */
 .pc-card-wrapper {
   --rotate-x: 0deg;
   --rotate-y: 0deg;
   --pointer-x: 50%;
   --pointer-y: 50%;
   --card-opacity: 0.1;
-  /* Default opacity glow */
   perspective: 1000px;
 }
 
@@ -83,29 +313,28 @@ body::after {
   transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y));
   transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   transform-style: preserve-3d;
-  /* Paksa rounding tetap konsisten */
   isolation: isolate;
   backface-visibility: hidden;
+  will-change: transform;
   -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .pc-card.active {
   transition: none;
   --card-opacity: 2;
-  /* Glow makin terang saat hover */
 }
 
-/* Background Dinamis yang berubah warna sesuai kursor */
 .pc-card-bg {
   position: absolute;
   inset: 0;
   z-index: 1;
-  /* Gradien yang kamu inginkan di contoh */
   background:
-    radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),
+    radial-gradient(
+      farthest-side circle at var(--pointer-x) var(--pointer-y),
       rgba(176, 111, 236, calc(var(--card-opacity) * 0.4)) 5%,
       rgba(111, 48, 159, calc(var(--card-opacity) * 0.2)) 30%,
-      transparent 70%),
+      transparent 70%
+    ),
     linear-gradient(145deg, rgba(96, 73, 110, 0.5) 0%, rgba(113, 196, 255, 0.1) 100%);
   background-color: #111;
   transition: opacity 0.5s ease;
@@ -114,9 +343,11 @@ body::after {
 .pc-shine {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at var(--pointer-x) var(--pointer-y),
-      rgba(255, 255, 255, 0.12) 0%,
-      transparent 50%);
+  background: radial-gradient(
+    circle at var(--pointer-x) var(--pointer-y),
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 50%
+  );
   z-index: 3;
   pointer-events: none;
 }
@@ -124,11 +355,51 @@ body::after {
 .pc-glare {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg,
-      rgba(255, 255, 255, 0.15) 0%,
-      transparent 40%,
-      rgba(0, 0, 0, 0.3) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
   mix-blend-mode: overlay;
   z-index: 4;
   pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════
+   LIGHT THEME — section overrides
+═══════════════════════════════════════════ */
+
+/* Hero badge adapts */
+.light .hero-badge {
+  background: rgba(139, 92, 246, 0.08);
+  border-color: rgba(139, 92, 246, 0.22);
+  color: var(--purple-600);
+}
+
+/* About section adapts */
+.light .about-section {
+  background: transparent;
+}
+
+/* Skill cards adapt */
+.light .skill-card {
+  background: rgba(255,255,255,0.7);
+  border-color: rgba(139,92,246,0.15);
+}
+
+/* Input fields */
+.themed-input {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text-1);
+  transition: border-color 0.2s, background 0.2s;
+}
+.themed-input:focus {
+  outline: none;
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 3px rgba(139,92,246,0.1);
+}
+.themed-input::placeholder {
+  color: var(--text-3);
 }

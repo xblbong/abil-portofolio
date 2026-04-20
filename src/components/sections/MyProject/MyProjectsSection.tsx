@@ -1,16 +1,20 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ExternalLink, Github } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { useTheme } from "next-themes";
 import { featuredProjects } from "@/src/data/projects";
 import ProjectCard from "../../canvas/ProjectCard";
 
 export default function MyProjectsSection() {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
   return (
     <section
       id="projects"
       className="py-24 relative overflow-hidden"
-      style={{ background: "#04030c" }}
+      style={{ background: isDark ? "#04030c" : "transparent" }}
     >
       {/* Background glow */}
       <div
@@ -29,20 +33,20 @@ export default function MyProjectsSection() {
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
           >
-            <p className="text-xs font-bold tracking-[0.3em] uppercase mb-3" style={{ color: "#a78bfa" }}>
+            <p className="text-xs font-bold tracking-[0.3em] uppercase mb-3" style={{ color: "var(--purple-400)" }}>
               Featured Work
             </p>
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-none">
-              <span className="text-white">Selected</span>{" "}
+              <span style={{ color: "var(--text-1)" }}>Selected</span>{" "}
               <span
                 className="text-transparent bg-clip-text"
-                style={{ backgroundImage: "linear-gradient(135deg, #a78bfa, #c4b5fd)" }}
+                style={{ backgroundImage: isDark ? "linear-gradient(135deg, #a78bfa, #c4b5fd)" : "linear-gradient(135deg, #7c3aed, #a78bfa)" }}
               >
                 Projects.
               </span>
             </h2>
-            <p className="mt-3 text-sm max-w-md" style={{ color: "rgba(196,181,253,0.5)" }}>
-              A few things I'm proud of — from real-world clients to personal experiments.
+            <p className="mt-3 text-sm max-w-md" style={{ color: "var(--text-2)" }}>
+              A few things I&apos;m proud of — from real-world clients to personal experiments.
             </p>
           </motion.div>
 
@@ -85,9 +89,9 @@ export default function MyProjectsSection() {
           <Link
             href="/projects"
             className="flex items-center gap-2 text-sm font-medium transition-colors duration-200"
-            style={{ color: "rgba(196,181,253,0.4)" }}
-            onMouseEnter={(e) => e.currentTarget.style.color = "#c4b5fd"}
-            onMouseLeave={(e) => e.currentTarget.style.color = "rgba(196,181,253,0.4)"}
+            style={{ color: "var(--text-3)" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = isDark ? "#c4b5fd" : "#7c3aed"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-3)"}
           >
             See all {featuredProjects.length}+ projects
             <ArrowRight size={13} />

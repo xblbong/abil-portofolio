@@ -10,12 +10,12 @@ import { usePathname } from "next/navigation";
 const ANCHOR_SECTIONS = ["about", "skills", "contact"];
 
 const navLinks = [
-  { name: "About",        href: "/#about",        sectionId: "about",        icon: <User size={16} /> },
-  { name: "Skills",       href: "/#skills",       sectionId: "skills",       icon: <Code2 size={16} /> },
-  { name: "Projects",     href: "/projects",      sectionId: null,           icon: <FolderOpen size={16} /> },
-  { name: "Experience",   href: "/experience",    sectionId: null,           icon: <Briefcase size={16} /> },
-  { name: "Certificates", href: "/certificates",  sectionId: null,           icon: <Award size={16} /> },
-  { name: "Contact",      href: "/#contact",      sectionId: "contact",      icon: <Mail size={16} /> },
+  { name: "About", href: "/#about", sectionId: "about", icon: <User size={16} /> },
+  { name: "Skills", href: "/#skills", sectionId: "skills", icon: <Code2 size={16} /> },
+  { name: "Projects", href: "/projects", sectionId: null, icon: <FolderOpen size={16} /> },
+  { name: "Experience", href: "/experience", sectionId: null, icon: <Briefcase size={16} /> },
+  { name: "Certificates", href: "/certificates", sectionId: null, icon: <Award size={16} /> },
+  { name: "Contact", href: "/#contact", sectionId: "contact", icon: <Mail size={16} /> },
 ];
 
 export default function Navbar() {
@@ -23,7 +23,6 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  // Which anchor section is currently visible (null = none / at top)
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = usePathname();
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -31,27 +30,18 @@ export default function Navbar() {
   useEffect(() => {
     setMounted(true);
 
-    // Scroll-aware background
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    // Only run IntersectionObserver on landing page
     if (pathname !== "/") return () => window.removeEventListener("scroll", onScroll);
 
-    // Observe each section
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
         });
       },
-      {
-        // Trigger when section reaches ~30% of viewport height
-        rootMargin: "-20% 0px -60% 0px",
-        threshold: 0,
-      }
+      { rootMargin: "-20% 0px -60% 0px", threshold: 0 }
     );
 
     ANCHOR_SECTIONS.forEach((id) => {
@@ -67,44 +57,52 @@ export default function Navbar() {
 
   if (!mounted) return null;
 
-  /**
-   * Determine if a nav link is "active":
-   * - Route links (/projects etc.) → active when pathname matches
-   * - Anchor links (/#about etc.) → active only when that section is in view
-   */
-  const isActive = (link: typeof navLinks[0]) => {
-    if (link.sectionId) {
-      // Anchor link: only active when section is in viewport
-      return pathname === "/" && activeSection === link.sectionId;
-    }
-    // Route link
+  const isActive = (link: (typeof navLinks)[0]) => {
+    if (link.sectionId) return pathname === "/" && activeSection === link.sectionId;
     return pathname === link.href;
   };
 
+  const isDark = theme === "dark";
+
   return (
-    <header className="select-none fixed top-0 left-0 right-0 z-50 flex justify-center p-4 transition-all duration-300">
+    <header className="select-none fixed top-0 left-0 right-0 z-50 flex justify-center p-3 sm:p-4 transition-all duration-300">
       <nav
-        className="w-full max-w-6xl px-6 py-3 flex justify-between items-center transition-all duration-500 rounded-2xl"
+        className="w-full max-w-6xl px-4 sm:px-6 py-2.5 sm:py-3 flex justify-between items-center rounded-2xl transition-all duration-500"
         style={{
-          background: scrolled ? "rgba(6,4,20,0.88)" : "rgba(6,4,20,0.5)",
-          border: "1px solid rgba(139,92,246,0.15)",
+          background: scrolled
+            ? "var(--bg-nav-scrolled)"
+            : "var(--bg-nav)",
+          border: "1px solid var(--border)",
           backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
           boxShadow: scrolled
-            ? "0 4px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(139,92,246,0.08)"
+            ? isDark
+              ? "0 4px 30px rgba(0,0,0,0.45), 0 0 0 1px rgba(139,92,246,0.08)"
+              : "0 4px 30px rgba(139,92,246,0.12), 0 0 0 1px rgba(139,92,246,0.1)"
             : "none",
         }}
       >
         {/* Logo */}
         <Link
           href="/"
-          className="font-black text-xl tracking-tighter shrink-0"
-          style={{
-            background: "linear-gradient(135deg, #ffffff 0%, #c4b5fd 60%, #a78bfa 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
+          className="font-black text-xl tracking-tighter shrink-0 flex items-center gap-1.5"
         >
-          PortoBila
+          <span
+            style={{
+              color: isDark ? "#ffffff" : "#5b21b6",
+              letterSpacing: "-0.04em",
+            }}
+          >
+            Porto
+          </span>
+          <span
+            style={{
+              color: isDark ? "#a78bfa" : "#7c3aed",
+              letterSpacing: "-0.04em",
+            }}
+          >
+            Bila
+          </span>
         </Link>
 
         {/* Desktop Menu */}
@@ -117,29 +115,32 @@ export default function Navbar() {
                 href={link.href}
                 className="relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200"
                 style={{
-                  color: active ? "#c4b5fd" : "rgba(196,181,253,0.5)",
-                  background: active ? "rgba(139,92,246,0.12)" : "transparent",
+                  color: active
+                    ? isDark ? "#c4b5fd" : "#7c3aed"
+                    : isDark ? "rgba(196,181,253,0.5)" : "rgba(100,50,180,0.55)",
+                  background: active
+                    ? isDark ? "rgba(139,92,246,0.12)" : "rgba(139,92,246,0.1)"
+                    : "transparent",
                 }}
                 onMouseEnter={(e) => {
                   if (!active) {
-                    e.currentTarget.style.color = "rgba(196,181,253,0.85)";
-                    e.currentTarget.style.background = "rgba(139,92,246,0.07)";
+                    e.currentTarget.style.color = isDark ? "rgba(196,181,253,0.85)" : "rgba(100,50,180,0.9)";
+                    e.currentTarget.style.background = isDark ? "rgba(139,92,246,0.07)" : "rgba(139,92,246,0.07)";
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!active) {
-                    e.currentTarget.style.color = "rgba(196,181,253,0.5)";
+                    e.currentTarget.style.color = isDark ? "rgba(196,181,253,0.5)" : "rgba(100,50,180,0.55)";
                     e.currentTarget.style.background = "transparent";
                   }
                 }}
               >
                 {link.name}
-                {/* Active dot indicator */}
                 {active && (
                   <motion.div
                     layoutId="navActiveDot"
                     className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
-                    style={{ background: "#a78bfa" }}
+                    style={{ background: isDark ? "#a78bfa" : "#7c3aed" }}
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -150,17 +151,39 @@ export default function Navbar() {
 
         {/* Right actions */}
         <div className="flex items-center gap-2 shrink-0">
+          {/* Theme toggle */}
           <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={() => setTheme(isDark ? "light" : "dark")}
             aria-label="Toggle theme"
-            className="p-2 rounded-xl transition-all duration-200"
+            className="p-2 rounded-xl transition-all duration-300"
             style={{
-              color: "rgba(196,181,253,0.5)",
-              background: "rgba(139,92,246,0.08)",
-              border: "1px solid rgba(139,92,246,0.12)",
+              color: isDark ? "rgba(196,181,253,0.7)" : "rgba(109,40,217,0.75)",
+              background: isDark ? "rgba(139,92,246,0.08)" : "rgba(139,92,246,0.1)",
+              border: "1px solid var(--border)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = isDark
+                ? "rgba(139,92,246,0.16)"
+                : "rgba(139,92,246,0.18)";
+              e.currentTarget.style.color = isDark ? "#c4b5fd" : "#6d28d9";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = isDark
+                ? "rgba(139,92,246,0.08)"
+                : "rgba(139,92,246,0.1)";
+              e.currentTarget.style.color = isDark
+                ? "rgba(196,181,253,0.7)"
+                : "rgba(109,40,217,0.75)";
             }}
           >
-            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            <motion.div
+              key={theme}
+              initial={{ rotate: -30, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              transition={{ duration: 0.2 }}
+            >
+              {isDark ? <Sun size={16} /> : <Moon size={16} />}
+            </motion.div>
           </button>
 
           {/* Mobile toggle */}
@@ -168,9 +191,9 @@ export default function Navbar() {
             aria-label="Open menu"
             className="lg:hidden p-2 rounded-xl transition-all duration-200"
             style={{
-              color: "rgba(196,181,253,0.5)",
-              background: "rgba(139,92,246,0.08)",
-              border: "1px solid rgba(139,92,246,0.12)",
+              color: isDark ? "rgba(196,181,253,0.5)" : "rgba(109,40,217,0.65)",
+              background: isDark ? "rgba(139,92,246,0.08)" : "rgba(139,92,246,0.1)",
+              border: "1px solid var(--border)",
             }}
             onClick={() => setIsOpen(!isOpen)}
           >
@@ -189,10 +212,15 @@ export default function Navbar() {
             transition={{ duration: 0.18, ease: "easeOut" }}
             className="absolute top-[72px] left-4 right-4 p-3 rounded-2xl lg:hidden flex flex-col"
             style={{
-              background: "rgba(6,4,20,0.96)",
-              border: "1px solid rgba(139,92,246,0.18)",
+              background: isDark
+                ? "rgba(6,4,20,0.97)"
+                : "rgba(253,252,255,0.97)",
+              border: "1px solid var(--border)",
               backdropFilter: "blur(24px)",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.7)",
+              WebkitBackdropFilter: "blur(24px)",
+              boxShadow: isDark
+                ? "0 20px 60px rgba(0,0,0,0.7)"
+                : "0 20px 60px rgba(139,92,246,0.15)",
             }}
           >
             {navLinks.map((link, idx) => {
@@ -209,15 +237,23 @@ export default function Navbar() {
                     onClick={() => setIsOpen(false)}
                     className="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200"
                     style={{
-                      background: active ? "rgba(139,92,246,0.12)" : "transparent",
-                      color: active ? "#c4b5fd" : "rgba(196,181,253,0.5)",
+                      background: active
+                        ? isDark ? "rgba(139,92,246,0.12)" : "rgba(139,92,246,0.1)"
+                        : "transparent",
+                      color: active
+                        ? isDark ? "#c4b5fd" : "#7c3aed"
+                        : isDark ? "rgba(196,181,253,0.5)" : "rgba(100,50,180,0.6)",
                     }}
                   >
                     <div
                       className="p-1.5 rounded-lg"
                       style={{
-                        background: active ? "rgba(139,92,246,0.2)" : "rgba(139,92,246,0.08)",
-                        color: active ? "#a78bfa" : "rgba(167,139,250,0.4)",
+                        background: active
+                          ? isDark ? "rgba(139,92,246,0.2)" : "rgba(139,92,246,0.15)"
+                          : isDark ? "rgba(139,92,246,0.08)" : "rgba(139,92,246,0.07)",
+                        color: active
+                          ? isDark ? "#a78bfa" : "#7c3aed"
+                          : isDark ? "rgba(167,139,250,0.4)" : "rgba(109,40,217,0.4)",
                       }}
                     >
                       {link.icon}

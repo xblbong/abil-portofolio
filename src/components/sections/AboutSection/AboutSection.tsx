@@ -1,76 +1,191 @@
 "use client";
 import { motion } from "framer-motion";
+import { MapPin, Zap, Camera, Code2, MousePointer2 } from "lucide-react";
 import dynamic from "next/dynamic";
 
 const Lanyard = dynamic(() => import("../../canvas/Lanyard"), {
     ssr: false,
-    loading: () => <div className="h-[40rem] w-full" /> // Placeholder saat loading
+    loading: () => <div className="h-[40rem] w-full" />,
 });
+
+// Quick stats to give immediate context
+const highlights = [
+    { icon: Code2,   label: "Frontend Dev",      sub: "React · Next.js · TypeScript" },
+    { icon: Camera,  label: "Creative Eye",       sub: "Photography & Video Editing" },
+    { icon: Zap,     label: "Google Ambassador",  sub: "Universitas Brawijaya" },
+    { icon: MapPin,  label: "Based in Malang",    sub: "Indonesia · Open to Remote" },
+];
 
 export default function AboutSection() {
     return (
-        <section id="about" className="py-24 relative overflow-hidden bg-black">
-            {/* Efek Warna Background (Boom Effect) */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/20 blur-[150px] rounded-full -mr-64 -mt-64" />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-600/10 blur-[130px] rounded-full -ml-48 -mb-48" />
+        <section
+            id="about"
+            className="py-24 relative overflow-hidden"
+            style={{ background: "var(--bg-section)" }}
+        >
+            {/* Ambient glow blobs */}
+            <div
+                className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full -mr-64 -mt-64 pointer-events-none blur-layer"
+                style={{ background: "var(--glow-purple-sm)", filter: "blur(150px)" }}
+            />
+            <div
+                className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full -ml-48 -mb-48 pointer-events-none blur-layer"
+                style={{ background: "rgba(37,99,235,0.08)", filter: "blur(130px)" }}
+            />
 
-            <div className="container mx-auto px-6 md:px-12 lg:px-24">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-24 relative z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-                    {/* SISI KIRI: LANYARD 3D */}
+                    {/* ── LEFT: LANYARD 3D ── */}
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
+                        initial={{ opacity: 0, x: -40 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 1 }}
+                        transition={{ duration: 0.9 }}
                         className="relative order-2 lg:order-1 flex flex-col items-center"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-purple-500/20 blur-3xl rounded-full" />
+                        <div
+                            className="absolute inset-0 rounded-full pointer-events-none blur-layer"
+                            style={{
+                                background: "var(--glow-ambient)",
+                                filter: "blur(80px)",
+                            }}
+                        />
                         <Lanyard />
-                        <p className="text-center text-[11px] sm:text-[12px] md:text-[13px] text-gray-500 italic animate-pulse">
-                            *Try dragging my ID card!
+                        <p
+                            className="text-center text-xs italic mt-2 inline-flex items-center justify-center gap-1.5"
+                            style={{ color: "var(--text-3)" }}
+                        >
+                            <MousePointer2 size={13} />
+                            Try dragging my ID card
                         </p>
                     </motion.div>
 
-                    {/* SISI KANAN: STORY (COPYWRITING) */}
+                    {/* ── RIGHT: STORY ── */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="order-1 lg:order-2 space-y-8 text-center lg:text-left"
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.15 }}
+                        className="order-1 lg:order-2 flex flex-col gap-8"
                     >
-                        <div className="space-y-4">
-                            <h2 className="text-[11px] sm:text-xs md:text-sm tracking-[0.35em] text-purple-400 capitalize">
-                                About Me
-                            </h2>
-
-                            <h3 className="text-[32px] sm:text-[40px] md:text-[56px] lg:text-[72px] font-black italic text-white leading-none capitalize tracking-wider">
-                                beyond <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-purple-500 to-blue-400">
-                                    the code.
-                                </span>
-                            </h3>
+                        {/* Eyebrow */}
+                        <div
+                            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-bold tracking-[0.25em] uppercase w-fit"
+                            style={{
+                                background: "rgba(139,92,246,0.1)",
+                                border: "1px solid rgba(139,92,246,0.25)",
+                                color: "var(--purple-400)",
+                            }}
+                        >
+                            About Me
                         </div>
 
-                        <div className="space-y-6 text-gray-400 text-[14px] sm:text-[15px] md:text-[16px] lg:text-[18px] leading-relaxed font-medium">
-                            <p>
-                                Hi, I’m <span className="text-white font-semibold">Sabilah Mudrikah</span> a Frontend Developer based in Malang, Indonesia. I specialize in building high-performance, responsive websites using <span className="text-white font-semibold">React, Next.js, and ailwind CSS</span>.
-                            </p>
-                            <p>
-                                My focus is on delivering digital products where technical precision meets thoughtful design. Whether I'm building innovation platforms at Brawijaya University or advocating for tech standards as a  <span className="text-white font-semibold">Google Student Ambassador,</span>s I ensure every interface is not only functional but also intuitive and visually polished.
-                            </p>
-                            <p>
-                                Coming from a background in <span className="text-white font-semibold">photography and video editing</span>, I have developed a sharp eye for layout, motion, and visual hierarchy. This multidisciplinary approach allows me to bridge the gap between complex technical logic and compelling aesthetics, enabling fast iterations and seamless collaboration in dynamic environments. I build worlds people want to interact with.
-                            </p>
+                        {/* Heading */}
+                        <div>
+                            <h2
+                                className="text-5xl md:text-6xl lg:text-7xl font-black leading-[0.95] mb-3"
+                                style={{ color: "var(--text-1)", letterSpacing: "-0.03em" }}
+                            >
+                                Beyond
+                            </h2>
+                            <h2
+                                className="text-5xl md:text-6xl lg:text-7xl font-black leading-[0.95] italic"
+                                style={{ letterSpacing: "-0.03em" }}
+                            >
+                                <span
+                                    className="text-transparent bg-clip-text"
+                                    style={{
+                                        backgroundImage: "linear-gradient(135deg, var(--purple-400), var(--purple-500), #93c5fd)",
+                                    }}
+                                >
+                                    the code.
+                                </span>
+                            </h2>
+                        </div>
 
+                        {/* Description */}
+                        <p
+                            className="text-base md:text-lg leading-relaxed"
+                            style={{ color: "var(--text-2)" }}
+                        >
+                            I&apos;m <span className="font-semibold" style={{ color: "var(--text-1)" }}>Sabilah Mudrikah</span>,
+                            a Frontend Developer from Malang, Indonesia. I build fast, responsive interfaces
+                            with <span className="font-semibold" style={{ color: "var(--text-1)" }}>React, Next.js</span>, and a design-first mindset —
+                            blending technical precision with a creative eye shaped by photography and video.
+                        </p>
+
+                        {/* Highlight grid */}
+                        <div className="grid grid-cols-2 gap-3">
+                            {highlights.map((h, i) => (
+                                <motion.div
+                                    key={h.label}
+                                    initial={{ opacity: 0, y: 12 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.25 + i * 0.08, duration: 0.45 }}
+                                    className="flex items-start gap-3 p-4 rounded-2xl"
+                                    style={{
+                                        background: "var(--input-bg)",
+                                        border: "1px solid var(--border)",
+                                    }}
+                                >
+                                    <div
+                                        className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                                        style={{
+                                            background: "rgba(139,92,246,0.12)",
+                                            color: "var(--purple-400)",
+                                        }}
+                                    >
+                                        <h.icon size={15} />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <p
+                                            className="text-sm font-semibold leading-tight truncate"
+                                            style={{ color: "var(--text-1)" }}
+                                        >
+                                            {h.label}
+                                        </p>
+                                        <p
+                                            className="text-[11px] mt-0.5 leading-snug"
+                                            style={{ color: "var(--text-3)" }}
+                                        >
+                                            {h.sub}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        {/* CTA */}
+                        <div className="flex flex-col sm:flex-row flex-wrap gap-3">
                             <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="mt-5 mx-auto lg:mx-0 px-10 py-4 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full text-white font-bold tracking-[0.3em] text-[11px] sm:text-xs md:text-sm"
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
+                                className="w-full sm:w-auto px-7 py-3.5 rounded-2xl text-white font-bold text-sm tracking-wide"
+                                style={{
+                                    background: "linear-gradient(135deg, var(--purple-600), var(--purple-700))",
+                                    boxShadow: "0 4px 20px rgba(124,58,237,0.3)",
+                                }}
                                 onClick={() => window.location.href = "#contact"}
                             >
-                                Let’s work together!
+                                Let&apos;s Work Together
                             </motion.button>
+
+                            <motion.a
+                                href="/file/Frontend-cv-SabilahMudrikah.pdf"
+                                download
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
+                                className="w-full sm:w-auto px-7 py-3.5 rounded-2xl text-sm font-bold tracking-wide transition-all duration-200"
+                                style={{
+                                    background: "var(--input-bg)",
+                                    border: "1px solid var(--border)",
+                                    color: "var(--text-2)",
+                                }}
+                            >
+                                Download CV
+                            </motion.a>
                         </div>
                     </motion.div>
 
